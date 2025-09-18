@@ -1,0 +1,23 @@
+.container {
+    position: relative;
+    width: 250px;
+  }
+input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    padding-right: 30px; 
+    box-sizing: border-box;
+  }
+  .eye-icon {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    fill: #888;
+  }
+  .eye-icon:hover {
+    fill: #000;
+  }
