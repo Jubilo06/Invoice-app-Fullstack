@@ -1,6 +1,6 @@
 {
   "version": 2,
-  
+
   "routes": [
     {
       "src": "/api/(.*)",
@@ -8,7 +8,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "invoice-app/dist/index.html"
+      "dest": "/index.html"
     }
   ]
 }
