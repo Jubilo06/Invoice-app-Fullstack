@@ -1,11 +1,11 @@
 import React from 'react'
 import { Stack, Typography, Link, Icon } from '@mui/material'
-import FacebookIcon from '@mui/icons-material/Facebook'
-import XIcon from '@mui/icons-material/X'
-import WhatsappIcon from '@mui/icons-material/WhatsApp'
-import InstagramIcon from '@mui/icons-material/Instagram'
-import LinkedinIcon from '@mui/icons-material/LinkedIn'
-import GithubIcon from '@mui/icons-material/Github'
+import FacebookIcon from '@mui/icons-material/Facebook';
+import XIcon from '@mui/icons-material/X';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 function Footer() {
   return (
     <Stack bgcolor='gold' width="100%" justifyContent='center' alignItems='center' my={4}>
