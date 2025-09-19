@@ -4,7 +4,7 @@ import FacebookIcon from '@mui/icons-material/Facebook'
 import XIcon from '@mui/icons-material/X'
 import WhatsappIcon from '@mui/icons-material/WhatsApp'
 import InstagramIcon from '@mui/icons-material/Instagram'
-import LinkedinIcon from '@mui/icons-material/Linkedin'
+import LinkedinIcon from '@mui/icons-material/LinkedIn'
 import GithubIcon from '@mui/icons-material/Github'
 function Footer() {
   return (
