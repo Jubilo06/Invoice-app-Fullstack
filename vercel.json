@@ -2,17 +2,15 @@
   "version": 2,
   "builds": [
     {
+      "src": "backend/src/index.mjs",
+      "use": "@vercel/node"
+    },
+    {
       "src": "invoice-app/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "installCommand": "npm install",
-        "buildCommand": "npm run build",
-        "outputDirectory": "dist"
+        "distDir": "dist"
       }
-    },
-    {
-      "src": "backend/src/index.mjs",
-      "use": "@vercel/node"
     }
   ],
 
@@ -20,14 +18,6 @@
     {
       "src": "/api/(.*)",
       "dest": "backend/src/index.mjs"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/invoice-app/dist/assets/$1"
-    },
-    {
-      "src": "/(.*\\.(ico|png|svg|jpg|jpeg|webmanifest|js|css))$",
-      "dest": "/invoice-app/dist/$1"
     },
     {
       "src": "/(.*)",
