@@ -7,8 +7,11 @@
       "dest": "backend/src/index.mjs"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/invoice-app/dist/index.html"
     }
   ]
 }
