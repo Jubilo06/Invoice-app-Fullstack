@@ -1,27 +1,9 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "backend/src/index.mjs",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "invoice-app/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "backend/src/index.mjs"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/invoice-app/dist/index.html"
+      "source": "/api/:path*",
+      "destination": "/backend/src/index.mjs"
     }
   ]
 }
