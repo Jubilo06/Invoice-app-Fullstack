@@ -7,8 +7,9 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate",
-      injectRegister: "inline",
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.js",
       manifest: {
         name: "Jubilo Invoice App",
         short_name: "InvoiceApp",
