@@ -8,6 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      injectRegister: "inline",
       manifest: {
         name: "Jubilo Invoice App",
         short_name: "InvoiceApp",
@@ -44,5 +45,4 @@ export default defineConfig({
       },
     }),
   ],
-  
 });
