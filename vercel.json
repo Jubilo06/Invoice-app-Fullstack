@@ -1,16 +1,39 @@
+
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "invoice-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "backend/src/index.mjs",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
     {
-      "handle": "filesystem"
+       "handle": "filesystem"
     },
     {
       "src": "/api/(.*)",
-      "dest": "/backend/src/index.mjs"
+      "dest": "backend/src/index.mjs"
+    },
+
+    {
+      "src": "/(.*\\.(ico|png|svg|jpg|jpeg|webmanifest|js|css))$",
+      "dest": "/invoice-app/dist/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/invoice-app/dist/assets/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/invoice-app/dist/index.html"
     }
   ]
 }

@@ -27,30 +27,7 @@ export const AuthProvider = ({ children }) => {
       throw new Error(error.response?.data || 'An unknown error occurred.');
     }
   };
-  // const login = async (credentials) => {
-  //   console.log("Data being sent to /login API:", credentials);
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //     }
-  //     const response = await api.post('/login', credentials, config);
-  //      const { token,user: userFromServer } = response.data;
-  //      if (!token || !userFromServer) {
-  //     throw new Error("Invalid response from server");
-  //     }
-  //     console.log("AuthContext: Token received, setting in storage and state.");
-
-  //     localStorage.setItem('token', token);
-  //     setToken(token);
-  //     setUser(userFromServer);
-  //     console.log("AuthContext: Login function completed successfully.");
-  //   } catch (error) {
-  //     console.error("Error from API call in context:", error);
-  //     throw new Error('Login failed. Please check your credentials.');
-  //   }
-  // };
+  
   const login = async (credentials) => {
     console.log("Data being sent to /login API:", credentials);
     try {

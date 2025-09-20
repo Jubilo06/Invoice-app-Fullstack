@@ -7,12 +7,6 @@ import Invoice from "../models/Invoice.mjs";
 
 
 const router = express.Router();
-// const ensureAuthenticated = (req, res, next) => {
-//   if (req.isAuthenticated()) {
-//     return next();
-//   }
-//   res.status(401).send("Please log in to view this resource.");
-// };
 const ensureAuthenticated = passport.authenticate("jwt", { session: false });
 const logRequestBody = (req, res, next) => {
   console.log("--- NEW LOGIN REQUEST ---");
@@ -42,47 +36,10 @@ router.post("/api/register", async (req, res) => {
   }
 });
 
-// Door 2: Log a user in
-// router.post("/login", passport.authenticate("local"), (req, res) => {
-//   // If Passport gets past this point, the user is authenticated.
-//   // We just send back a success message and some user info.
-//   res.json({
-//     message: "Login successful!",
-//     user: {
-//       id: req.user.id,
-//       username: req.user.username,
-//       firstName: req.user.firstName,
-//     },
-//   });
-// });
-// router.post(
-//   "/api/login", logRequestBody,
-//   passport.authenticate("local", { session: false }),
-//   (req, res) => {
-//     // If we get here, passport-local has confirmed the user is valid.
-//     // The authenticated user is on `req.user`.
-
-//     // 1. Create the "payload" - the information to put on the ID badge.
-//     const payload = { id: req.user.id, username: req.user.username };
-
-//     // 2. Sign the token, creating the JWT string.
-//     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-//       expiresIn: "1d",
-//     }); // Expires in 1 day
-
-//     // 3. Send the token back to the frontend.
-//     res.json({ message: "Login successful!", token: `Bearer ${token}` });
-//   }
-// );
 router.post(
   "/api/login",
-  // Your logging middleware (this is good for debugging)
   logRequestBody,
-
-  // The passport bouncer
   passport.authenticate("local", { session: false }),
-
-  // The final handler that runs ONLY on success
   (req, res) => {
     console.log("--- Login successful! Creating JWT. ---"); // Add this log!
     console.log(
@@ -100,8 +57,6 @@ router.post(
       firstName: req.user.firstName,
     };
      console.log("Payload for JWT:", payload);
-
-    // Sign the token using your secret key from .env
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET,
