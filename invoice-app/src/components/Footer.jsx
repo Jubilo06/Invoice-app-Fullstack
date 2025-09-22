@@ -16,11 +16,11 @@ function Footer() {
             <Typography color='white' fontWeight={700}>Contact me</Typography>
             <Stack direction='row' spacing={2}>
                 <Link  component='a' href='https://www.facebook.com/profile.php?id=100007386554971' ><Icon><FacebookIcon/></Icon></Link>
-                <Link  component='a' href='https://wa.me/2348133834904'><Icon><WhatsappIcon color='success' /></Icon></Link>
+                <Link  component='a' href='https://wa.me/2348133834904'><Icon><WhatsAppIcon color='success' /></Icon></Link>
                 <Link component='a' href='https://x.com/jubiloforever?t=4AcX2si_9wGVx5J-2UWL1g&s=09'><Icon><XIcon htmlColor='#000'/></Icon></Link>
                 <Link component='a' href='https://www.instagram.com/tml_bliss?igsh=YzljYTk10Dg3Zg=='><Icon><InstagramIcon htmlColor='#C13584' /></Icon></Link>
-                <Link component='a' href='https://www.linkedin.com/in/temiloluwa-amusan-749b134b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app'><Icon><LinkedinIcon htmlColor='#0A66C2' /></Icon></Link>
-                <Link component='a' href='https://github.com/Jubilo06'><Icon><GithubIcon htmlColor='black' /></Icon></Link>   
+                <Link component='a' href='https://www.linkedin.com/in/temiloluwa-amusan-749b134b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app'><Icon><LinkedInIcon htmlColor='#0A66C2' /></Icon></Link>
+                <Link component='a' href='https://github.com/Jubilo06'><Icon><GitHubIcon htmlColor='black' /></Icon></Link>   
             </Stack>
         </Stack>
 

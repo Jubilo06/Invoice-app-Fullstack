@@ -10,6 +10,10 @@ export default defineConfig({
       strategies: "injectManifest",
       srcDir: "src",
       filename: "sw.js",
+      devOptions: {
+        enabled: true, // This enables the service worker in development mode.
+        type: "module", // Recommended for modern browsers.
+      },
       manifest: {
         name: "Jubilo Invoice App",
         short_name: "InvoiceApp",
