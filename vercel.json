@@ -24,20 +24,23 @@
     },
     {
       "src": "/sw.js", 
-      "dest": "/invoice-app/dist/sw.js",
-      "headers": { "Content-Type": "application/javascript" }
+      "headers": { "cache-control": "public, max-age=0, must-revalidate" },
+      "dest": "/invoice-app/dist/sw.js"
     },
     {
       "src": "/manifest.webmanifest", 
+      "headers": { "cache-control": "public, max-age=0, must-revalidate" },
       "dest": "/invoice-app/dist/manifest.webmanifest"
     },
 
     {
       "src": "/(.*\\.(ico|png|svg|jpg|jpeg|webmanifest|js|css))$",
+       "headers": { "cache-control": "public, max-age=31536000, immutable" },
       "dest": "/invoice-app/dist/$1"
     },
     {
       "src": "/assets/(.*)",
+      "headers": { "cache-control": "s-maxage=31536000, immutable" },
       "dest": "/invoice-app/dist/assets/$1"
     },
     {
