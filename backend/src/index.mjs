@@ -18,8 +18,6 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   ); // Allow all headers
-
-  // If this is a preflight OPTIONS request, just send back a 200 OK.
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
@@ -39,22 +37,5 @@ mongoose
 app.use(cookieParser());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5014;
-// const server = app.listen(PORT, "0.0.0.0", () => {
-//   console.log(`✅ Server is successfully running on port: ${PORT}`);
-//   console.log(`   You can access it at http://localhost:${PORT}`);
-// });
-
-// // Add an error handler for the server itself
-// server.on("error", (error) => {
-//   if (error.code === "EADDRINUSE") {
-//     console.error(
-//       `❌ ERROR: Port ${PORT} is already in use by another application.`
-//     );
-//   } else {
-//     console.error(`❌ SERVER ERROR: ${error.message}`);
-//   }
-//   process.exit(1); // Exit the script because the server can't run
-// });
 
 export default app;

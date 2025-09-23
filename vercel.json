@@ -1,21 +1,9 @@
 {
   "version": 2,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "backend/src/index.mjs"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/invoice-app/dist/assets/$1"
-    },
-    {
-      "src": "/(.*\\.(ico|png|svg|jpg|jpeg|webmanifest|js|css))$",
-      "dest": "/invoice-app/dist/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/invoice-app/dist/index.html"
+      "source": "/api/:path*",
+      "destination": "/backend/src/index.mjs"
     }
   ]
 }
