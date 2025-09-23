@@ -10,6 +10,7 @@ export default defineConfig({
       strategies: "injectManifest",
       srcDir: "src",
       filename: "sw.js",
+      registerType: "autoUpdate",
       devOptions: {
         enabled: true, // This enables the service worker in development mode.
         type: "module", // Recommended for modern browsers.

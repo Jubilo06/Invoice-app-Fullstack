@@ -7,19 +7,7 @@ import { InvoiceProvider } from './components/InvoiceProvider'
 import { AuthProvider } from './components/AuthContext.jsx'
 import { Workbox } from 'workbox-window'
 
-if ('serviceWorker' in navigator) {
-  const wb = new Workbox('/sw.js');
 
-  wb.addEventListener('installed', event => {
-    if (event.isUpdate) {
-      if (confirm('New content is available. Click OK to refresh.')) {
-        window.location.reload();
-      }
-    }
-  });
-
-  wb.register();
-}
 
 
 createRoot(document.getElementById('root')).render(
