@@ -58,10 +58,10 @@ function Login() {
             <Typography color='white' textAlign="center" variant='h4'>Sign in</Typography>
             <Stack width="100%" justifyContent="center" alignItems='center'>
                 <input type='text' name='username' value={formData.username} onChange={handleChange} 
-                placeholder='your username' style={{width:"90%", padding: '10px 40px 10px 10px', borderRadius:'5px 5px', fontSize:'16px'}} />
+                placeholder='your username' style={{width:"100%", padding:'10px 0 10px 0', borderRadius:'10px 10px', fontSize:'16px'}} />
             </Stack>
             
-            <Stack style={{ position: 'relative' }}>
+            <Stack width="100%" sx={{ position: 'relative' }}>
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -73,7 +73,7 @@ function Login() {
                     padding: '10px 70px 10px 10px', 
                     fontSize: '16px',
                     boxSizing: 'border-box',
-                    borderRadius:'5px 5px'
+                    borderRadius:'10px 10px'
                   }}
                 />
                 <svg

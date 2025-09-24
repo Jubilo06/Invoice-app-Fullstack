@@ -34,7 +34,7 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: true }));
 app.use(passport.initialize());
 configurePassport(passport);
-app.use('/api',routes);
+app.use(routes);
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("connected to Mongo atlas"))

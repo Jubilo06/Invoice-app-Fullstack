@@ -3,7 +3,7 @@ import usersRouter from "./users.mjs";
 import invoicesRouter from "./invoices.mjs";
 
 const router = Router();
-router.use('/users',usersRouter);
+router.use(usersRouter);
 router.use(invoicesRouter);
 
 export default router;
