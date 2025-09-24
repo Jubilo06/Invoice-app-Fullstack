@@ -91,6 +91,9 @@ export const InvoicePreview = React.forwardRef(({ data }, ref) => {
           </Stack>
           <Stack direction="column">
             <Typography sx={{borderBottom:"2px solid grey"}} fontWeight="700">Subtotal:{data.currency}{grandTotal.toFixed(2)}</Typography>
+            <Typography>{data.shippingValue && <><strong>Shipping:</strong> {data.shippingValue}</>}</Typography>
+            <Typography>{data.taxValue && <><strong>Tax:</strong> {data.taxValue}</>}</Typography>
+            <Typography>{data.discountValue && <><strong>discount:</strong> - {data.discountValue}</>}</Typography>
             <hr/>
             <Typography fontWeight="700">Total: {data.currency}{grandTotal.toFixed(2)}</Typography>
             <Typography >Amount Paid:{data.currency}{amountPaid.toFixed(2)}</Typography>
