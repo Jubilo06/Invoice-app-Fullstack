@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from "vite-plugin-pwa"; 
 
-// https://vite.dev/config/
+
 export default defineConfig({
   plugins: [
     react(),
@@ -12,8 +12,8 @@ export default defineConfig({
       filename: "sw.js",
       registerType: "autoUpdate",
       devOptions: {
-        enabled: true, // This enables the service worker in development mode.
-        type: "module", // Recommended for modern browsers.
+        enabled: true, 
+        type: "module", 
       },
       manifest: {
         name: "Jubilo Invoice App",

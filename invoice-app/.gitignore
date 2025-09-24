@@ -2,6 +2,7 @@
 invoice-app/node_modules/
 backend/node_modules/
 invoice-app/dist/
+invoice-app/.env
 invoice-app/build/
 invoice-app/dist-ssr/
 invoice-app/*.local/

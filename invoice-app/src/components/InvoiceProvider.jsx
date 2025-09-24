@@ -102,7 +102,7 @@ export function InvoiceProvider({children}) {
   }, []);
 const createNewInvoice = useCallback(async (invoiceData) => {
   try {
-      const response = await api.post('/invoices', invoiceData);
+      const response = await api.post('/api/invoices', invoiceData);
       setInvoiceList(prevList => [response.data, ...prevList]);
       setCurrentInvoice(response.data); // Also update the editor
       alert('Invoice saved to your account!');
@@ -138,7 +138,7 @@ const createNewInvoice = useCallback(async (invoiceData) => {
    const loadUserInvoices = useCallback(async () => { 
       setLoading(true);
     try {
-      const response = await api.get('/invoices');
+      const response = await api.get('/api/invoices');
       setInvoiceList(response.data); // Update the list state
     } catch (error) {
       console.error("Failed to load invoices:", error);
@@ -151,7 +151,7 @@ const createNewInvoice = useCallback(async (invoiceData) => {
   const updateInvoice = useCallback(async (invoiceId, updatedData) => { 
     console.log("Data being sent to backend for UPDATE:", updatedData);
     try {
-      const response = await api.put(`/invoices/${invoiceId}`, updatedData);
+      const response = await api.put(`/api/invoices/${invoiceId}`, updatedData);
       setInvoiceList(prevList => 
         prevList.map(inv => (inv._id === invoiceId ? response.data : inv))
       );
@@ -164,7 +164,7 @@ const createNewInvoice = useCallback(async (invoiceData) => {
   });
   const deleteInvoice = useCallback(async (invoiceId) => { 
     try {
-      await api.delete(`/invoices/${invoiceId}`);
+      await api.delete(`/api/invoices/${invoiceId}`);
       setInvoiceList(prevList => prevList.filter(inv => inv._id !== invoiceId));
       alert('Invoice deleted successfully!');
     } catch (error) {
@@ -177,7 +177,7 @@ const createNewInvoice = useCallback(async (invoiceData) => {
     sigPadRef.current.clear();
   };
   const saveInvoice = async () => {
-    const response = await api.post('/invoices', currentInvoice); 
+    const response = await api.post('/api/invoices', currentInvoice); 
     setCurrentInvoice(response.data); 
   
     alert('Invoice saved to your account!');
@@ -251,7 +251,7 @@ const addSection = useCallback(() => {
 };
 const downloadPdf = async (invoiceData) => {
   try {
-    const response = await api.post('/invoices/generate-pdf', invoiceData, {
+    const response = await api.post('/api/invoices/generate-pdf', invoiceData, {
       responseType: 'blob' // IMPORTANT: Tell axios to expect a file Blob
     });
     const file = new Blob([response.data], { type: 'application/pdf' });

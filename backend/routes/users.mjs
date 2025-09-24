@@ -15,13 +15,13 @@ const logRequestBody = (req, res, next) => {
   next(); // Pass control to the next handler
 };
 
-router.get("/api/profile", ensureAuthenticated, (req, res) => {
+router.get("/profile", ensureAuthenticated, (req, res) => {
   // Passport puts the user info on `req.user`. We just send it back.
   res.json(req.user);
 });
 
 // Door 1: Register a new user
-router.post("/api/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { firstName, lastName, username, password } = req.body;
     const existingUser = await User.findOne({ username });
@@ -37,7 +37,7 @@ router.post("/api/register", async (req, res) => {
 });
 
 router.post(
-  "/api/login",
+  "/login",
   logRequestBody,
   passport.authenticate("local", { session: false }),
   (req, res) => {
@@ -78,7 +78,7 @@ router.post(
       });
   }
 );
-router.put("/api/profile", ensureAuthenticated, async (req, res) => {
+router.put("/profile", ensureAuthenticated, async (req, res) => {
   try {
     const userId = req.user.id;
     const newprofileData = req.body;
@@ -94,7 +94,7 @@ router.put("/api/profile", ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.delete("/api/me", ensureAuthenticated, async (req, res) => {
+router.delete("/me", ensureAuthenticated, async (req, res) => {
   try {
     const userId = req.user.id;
     await Invoice.deleteMany({ userId: userId });

@@ -30,5 +30,8 @@
       "src": "/(.*)",
       "dest": "/invoice-app/dist/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

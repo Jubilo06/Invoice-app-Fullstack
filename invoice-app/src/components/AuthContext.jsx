@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
    const register = async (userData) => {
     console.log("3. Inside the context's register function."); 
     try {
-      await api.post('/register', userData);
+      await api.post('/api/register', userData);
     } catch (error) {
       console.error("Error from API call in context:", error); 
       throw new Error(error.response?.data || 'An unknown error occurred.');
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
          }
        }
 
-      const response = await api.post('/login', credentials, config);
+      const response = await api.post('/api/login', credentials, config);
       const { token, user: userFromServer } = response.data;
       
       if (!token || !userFromServer) {
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await api.get('/profile');
+      const response = await api.get('/api/profile');
       setUser(response.data);
 
       } catch (error) {
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
   };
   const updateUserProfile = async (profileData) => {
     try {
-      const response = await api.put('/profile', profileData);
+      const response = await api.put('/api/profile', profileData);
       setUser(response.data.user);
       return response.data.user;
     }  
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   };
   const deleteAccount = async () => {
     try {
-      await api.delete('/me');
+      await api.delete('/api/me');
       logout();
       
     } catch (error) {
