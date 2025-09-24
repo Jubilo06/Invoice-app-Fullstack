@@ -1,18 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "invoice-app/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
-    {
-      "src": "backend/src/index.mjs",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
