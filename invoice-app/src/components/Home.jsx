@@ -20,7 +20,8 @@ function Home() {
         <Typography fontWeight='bolder' mt={5}  lineHeight='40px' data-aos="zoom-in"
           border='1px solid transparent'  textAlign='left' fontSize={{xs:20,sm:30,md:40}}
           borderRadius='5px 5px' 
-          width="100%" color='white' sx={{height:'100%'}}>Hi, you are welcome
+          width="100%" color='white' sx={{height:'100%'}}>Create, manage, and send beautiful invoices in minutes. 
+          Get started now and take control of your billing.
         </Typography>  
       </Stack>
       
