@@ -1,16 +1,22 @@
 import React from 'react'
 import { useContext, useState, useEffect } from 'react'
 import { Stack, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { InvoiceContext } from './InvoiceProvider'
 import { AuthContext } from './AuthContext'
 import { Button, CircularProgress, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import styles from './Invoice.module.css'
+import Aos from 'aos'
+import 'aos/dist/aos.css'
 
 
 function Profile() {
+    useEffect(()=>{
+      Aos.init({duration:2000})
+    },[])
   const { 
     invoiceList, 
     setCurrentInvoice,
@@ -21,7 +27,7 @@ function Profile() {
     editInvoice 
   } = useContext(InvoiceContext);
   
-  const { user } = useContext(AuthContext);
+  const { user, deleteAccount } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
@@ -54,6 +60,17 @@ function Profile() {
       }
     }
   };
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to permanently delete your account and all data?')) {
+      try {
+        await deleteAccount();
+        alert('Account deleted.');
+        navigate('/'); 
+      } catch (error) {
+        alert(`Deletion failed: ${error.message}`);
+      }
+    }
+  };
 
   if (isLoading) {
     return <CircularProgress />;
@@ -61,13 +78,19 @@ function Profile() {
 
   return (
     <Stack bgcolor='#060010' width='100%'  alignItems='center' spacing={4} minHeight={600}>
-      {user&&<Typography variant='h5' pt={2}   width='98%'  
-      justifySelf='center' fontWeight={700}
+      {user&&<Stack  pt={2}   width='100%'  
+      justifySelf='center'   
       alignSelf='center'>
-      <Stack direction='row' justifySelf={{xs:'center', sm:'end'}} borderRadius={1} sx={{bgcolor:'gold'}} border='1px dotted white '>
-        Welcome {user.firstName} {user.lastName} <EmojiPeopleIcon htmlColor='#060010' />
-        </Stack> 
-      </Typography>}
+      <Typography direction='row' fontWeight={700} variant={{xs:"body2"}} pt={4} pb={4} height='80%' mr={2}  justifySelf={{xs:'flex-end', sm:'right'}} 
+      alignSelf={{xs:'end'}} data-aos="zoom-in"
+      sx={{ borderRadius:"30px 5px", color:'white', border:'none'}}>
+        Welcome {user.firstName} {user.lastName} <EmojiPeopleIcon htmlColor='white' />
+        </Typography> 
+        <Typography textAlign='center' color='white'>
+          A new User?Click this link to create profile for your company <Link to="/profile" style={{color:'olivedrab', fontSize:'20px'}}>here</Link>
+        </Typography>
+      </Stack>}
+      
       <Stack pt={20}>
         <Button  variant="contained" onClick={handleCreateNewClick}>
         + Create New Invoice
@@ -79,12 +102,12 @@ function Profile() {
         <Stack width='100%'>
           <Typography variant='h5' color='white' textAlign='center'>Your Invoices</Typography>
 
-            <List style={{backgroundColor:'lightblue', color:'black', width:'98%', justifySelf:'center', alignSelf:'center'}}>
+            <List style={{backgroundColor:'white', color:'black', width:'98%', justifySelf:'center', alignSelf:'center'}}>
             {invoiceList.map(invoice => (
-              <ListItem 
+              <ListItem className={styles.delete}
                 key={invoice._id}
                 secondaryAction={
-                  <Stack direction='row' spacing={2}>
+                  <Stack direction='row' ml={2} pb={5} spacing={{xs:1, sm:2}}>
                     <IconButton edge="end" aria-label="edit" onClick={() => handleEditClick(invoice)}>
                       <EditIcon htmlColor='green' />
                     </IconButton>
@@ -110,6 +133,18 @@ function Profile() {
       )
       }
     
+      <Stack pb={2} my={3} spacing={3} className={styles.delete} width='98%' border='1px solid transparent'
+          justifySelf='center' alignSelf='center'>
+        <Typography pt={2} fontWeight={700} fontSize={{xs:'25px'}} color="red" textAlign='center'>Delete account permanently</Typography>
+        <Typography variant="h6" textAlign='center' color='warning'>
+          This action cannot be undone ⚠
+        </Typography>
+        <Button sx={{width:'100px', justifySelf:"center", alignSelf:'center',backgroundColor:"#060010", 
+        textTransform:'capitalize', color:'white', fontSize:"20px"}}  
+        variant="outlined" onClick={handleDelete}>
+          Delete
+        </Button>
+      </Stack>
     </Stack>
   )
 }

@@ -2,20 +2,22 @@ import React from 'react';
 import Barcode from 'react-barcode';
 import { Stack, TableContainer,TableBody,TableCell,TableHead,TableRow, 
   Paper,Table,IconButton, Button, Typography, Divider } from '@mui/material'
+import { calculateTotals } from './TotalPrice';
 
 export const InvoicePreview = React.forwardRef(({ data }, ref) => {
 
   if (!data || !Array.isArray(data.sections)) {
     return <div ref={ref}>Preparing preview...</div>;
   }
-  const calculatedGrandTotal = data.sections.reduce((total, section) => 
-    total + (section?.items?.reduce((sectionTotal, item) => 
-      sectionTotal + (parseFloat(item.total_price) || 0), 0) || 0), 
-    0);
-  const grandTotal = parseFloat(data.manualGrandTotal) || calculatedGrandTotal;
-  const amountPaid = parseFloat(data.amountPaid) || 0;
-  const balanceDue = grandTotal - amountPaid;
-
+  // const calculatedGrandTotal = data.sections.reduce((total, section) => 
+  //   total + (section?.items?.reduce((sectionTotal, item) => 
+  //     sectionTotal + (parseFloat(item.total_price) || 0), 0) || 0), 
+  //   0);
+  // const grandTotal = parseFloat(data.manualGrandTotal) || calculatedGrandTotal;
+  // const amountPaid = parseFloat(data.amountPaid) || 0;
+  // const balanceDue = grandTotal - amountPaid;
+const { subTotal, taxAmount, discountAmount, shippingAmount, 
+  grandTotal, amountPaid, balanceDue } = calculateTotals(data);
 
   return (
     <Stack ref={ref} width={{xs:'100%', sm:'80%'}} my={4} height='auto' overflow='scroll' 
@@ -83,17 +85,16 @@ export const InvoicePreview = React.forwardRef(({ data }, ref) => {
         ))}
       </Stack>
         <Stack direction='row' justifyContent='space-between'>
-          <Stack direction="column" ml={4}>
+          <Stack direction="column" ml={{xs:0, sm:4, md:4}}>
             <Typography>{data.paymentInstruction && <><strong>Payment Instruction:</strong> <br />Pay Cheque to {data.companyName}</>}</Typography>
             <Typography>{data.accountDetails && <><strong>Sent to bank: </strong><br/>{data.accountDetails}</>} </Typography>
             <Typography>{data.terms && <><strong>Terms:</strong> <br/>{data.terms}</>}</Typography>
             <Typography>{data.notes && <><strong>Note:</strong><br/>{data.notes}</>}</Typography>
           </Stack>
           <Stack direction="column">
-            <Typography sx={{borderBottom:"2px solid grey"}} fontWeight="700">Subtotal:{data.currency}{grandTotal.toFixed(2)}</Typography>
-            <Typography>{data.shippingValue && <><strong>Shipping:</strong> {data.shippingValue}</>}</Typography>
-            <Typography>{data.taxValue && <><strong>Tax:</strong> {data.taxValue}</>}</Typography>
-            <Typography>{data.discountValue && <><strong>discount:</strong> - {data.discountValue}</>}</Typography>
+            {data.taxEnabled && <p><strong>Tax ({data.taxValue}{data.taxType === 'percentage' ? '%' : ''}):</strong> {data.currency}{taxAmount.toFixed(2)}</p>}
+            {data.discountEnabled && <p><strong>Discount ({data.discountValue}{data.discountType === 'percentage' ? '%' : ''}):</strong> -{data.currency}{discountAmount.toFixed(2)}</p>}
+            {data.shippingEnabled && <p><strong>Shipping:</strong> {data.currency}{shippingAmount.toFixed(2)}</p>}
             <hr/>
             <Typography fontWeight="700">Total: {data.currency}{grandTotal.toFixed(2)}</Typography>
             <Typography >Amount Paid:{data.currency}{amountPaid.toFixed(2)}</Typography>

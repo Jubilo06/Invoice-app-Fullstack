@@ -3,6 +3,7 @@ import { useState,useContext, useMemo } from 'react'
 import { InvoiceContext } from './InvoiceProvider'
 import { Stack, Typography, TextField, InputAdornment, Select, MenuItem } from '@mui/material'
 import { AuthContext } from './AuthContext'
+import { calculateTotals } from './TotalPrice';
 
 
 function Summary() {
@@ -10,32 +11,8 @@ function Summary() {
         saveSignature,addSection,updateSectionTitle,removeSection, currentInvoice, updateCurrentInvoiceField
        } = useContext(InvoiceContext); 
 
-
-  const subTotal = useMemo(() => {
-    let total = 0;
-    currentInvoice?.sections?.forEach(section => {
-      section?.items?.forEach(item => {
-        total += parseFloat(item.total_price) || 0;
-      });
-    });
-    return total;
-  }, [currentInvoice?.sections]);
-  let taxAmount = 0;
-  if (currentInvoice.taxEnabled) {
-    const taxVal = parseFloat(currentInvoice.taxValue) || 0;
-    taxAmount = currentInvoice.taxType === 'percentage' ? subTotal * (taxVal / 100) : taxVal;
-  }
-  
-  let discountAmount = 0;
-  if (currentInvoice.discountEnabled) {
-    const discountVal = parseFloat(currentInvoice.discountValue) || 0;
-    discountAmount = currentInvoice.discountType === 'percentage' ? subTotal * (discountVal / 100) : discountVal;
-  }
-  
-  const shippingAmount = currentInvoice.shippingEnabled ? (parseFloat(currentInvoice.shippingValue) || 0) : 0;
-  const grandTotal = subTotal + taxAmount - discountAmount + shippingAmount;
-  const amountPaid = parseFloat(currentInvoice.amountPaid) || 0;
-  const balanceDue = grandTotal - amountPaid;
+ const { subTotal, taxAmount, discountAmount, 
+  shippingAmount, grandTotal, balanceDue } = calculateTotals(currentInvoice);
   if (!currentInvoice) {
     return <div>Loading summary...</div>; 
   }

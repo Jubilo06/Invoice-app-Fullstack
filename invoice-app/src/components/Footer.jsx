@@ -8,13 +8,13 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 function Footer() {
   return (
-    <Stack bgcolor='gold' width="100%" justifyContent='center' alignItems='center' my={4}>
+    <Stack bgcolor='gold' width="100%" justifyContent='center' alignItems='center' my={4} pt={4} pb={4}>
         <Typography color='white' textAlign='center' fontWeight={700}>
             Copyright ©  Jubilo | Designed by Temiloluwa Amusan
         </Typography>
-        <Stack direction='row' spacing={2}>
-            <Typography color='white' fontWeight={700}>Contact me</Typography>
-            <Stack direction='row' spacing={2}>
+        <Stack direction={{xs:'column', sm:'row'}} spacing={{xs:1,sm :2}} width='100%' justifyContent='center' alignItems='center'>
+            <Typography color='white' textAlign='center' fontWeight={700} >Contact me</Typography>
+            <Stack direction='row' spacing={2} justifySelf='center'  alignSelf='center'>
                 <Link  component='a' href='https://www.facebook.com/profile.php?id=100007386554971' ><Icon><FacebookIcon/></Icon></Link>
                 <Link  component='a' href='https://wa.me/2348133834904'><Icon><WhatsAppIcon color='success' /></Icon></Link>
                 <Link component='a' href='https://x.com/jubiloforever?t=4AcX2si_9wGVx5J-2UWL1g&s=09'><Icon><XIcon htmlColor='#000'/></Icon></Link>

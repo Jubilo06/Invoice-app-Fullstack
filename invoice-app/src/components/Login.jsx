@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import personal from '../assets/personal.png'
 import { AuthContext } from './AuthContext'
 import src3 from '../assets/src3.jpg'
+import styles from './Invoice.module.css'
 function Login() {
 
     const {loading, setLoading}=useContext(InvoiceContext)
@@ -30,7 +31,7 @@ function Login() {
         navigate('/Dashboard'); // ✅ Go directly to the dashboard
       } else {
         console.log("Profile incomplete. Navigating to profile setup.");
-        navigate('/profile'); // ❗ Go to the profile setup page
+        navigate('/Dashboard'); // ❗ Go to the profile setup page
       }
 
     } catch (error) {
@@ -50,7 +51,7 @@ function Login() {
                 backgroundPosition: 'center'}}>
         <form onSubmit={handleSubmit} style={{width:'100%'}}>
             <Stack direction="column"  width={{xs:'80%',sm:'60%', md:'40%'}} spacing={3} lineHeight="auto" pt={2} height='auto' 
-        borderRadius="10px 10px" border='1px solid transparent' 
+        borderRadius="10px 10px" border='1px solid transparent' className={styles.glass3d}
         justifySelf='center' alignSelf='center'>
               <Stack width='200px' height='200px' justifySelf='center' alignSelf='center' sx={{backgroundImage:`url(${personal})`, backgroundRepeat:"no-repeat", backgroundSize: 'contain',
                   backgroundPosition: 'center'}}>
@@ -58,7 +59,8 @@ function Login() {
             <Typography color='white' textAlign="center" variant='h4'>Sign in</Typography>
             <Stack width="100%" justifyContent="center" alignItems='center'>
                 <input type='text' name='username' value={formData.username} onChange={handleChange} 
-                placeholder='your username' style={{width:"100%", padding:'10px 0 10px 0', borderRadius:'10px 10px', fontSize:'16px'}} />
+                placeholder='your username' style={{width:"94%", height:'40px',textIndent:'5px',  borderRadius:'10px 10px', 
+                fontSize:'16px', justifySelf:'center', alignSelf:'center'}} />
             </Stack>
             
             <Stack width="100%" sx={{ position: 'relative' }}>
@@ -69,8 +71,9 @@ function Login() {
                   value={formData.password} onChange={handleChange}
                   placeholder="Enter password"
                   style={{
-                    width: '100%',
-                    padding: '10px 70px 10px 10px', 
+                    width: '95%',
+                    justifySelf:'center', alignSelf:'center',
+                     height:'40px',textIndent:'5px',
                     fontSize: '16px',
                     boxSizing: 'border-box',
                     borderRadius:'10px 10px'
@@ -80,7 +83,7 @@ function Login() {
                   onClick={togglePasswordVisibility}
                   style={{
                     position: 'absolute',
-                    right: '10px',
+                    right: '25px',
                     top: '50%',
                     transform: 'translateY(-50%)',
                     cursor: 'pointer',
@@ -106,7 +109,7 @@ function Login() {
             </Stack>
 
             <Stack justifyContent="center" alignItems='center' width="100%" spacing={2}>
-                <Typography color='white'>New user?&nbsp;&nbsp; <Link to="/register" style={{textDecoration:'none', color:'white'}}>Sign up</Link></Typography>
+                <Typography color='white'>New user?&nbsp;&nbsp; <Link to="/register" style={{ color:'white'}}>Sign up</Link></Typography>
                 <Button type='submit' loading={loading} style={{width:'80px', height:'30px', textAlign:'center',border:'1px solid white', 
                     borderRadius:"5px 5px", backgroundColor:"#060010", color:'white', marginBottom:'10px'}} 
                      disabled={!formData.username || !formData.password}>Login</Button>

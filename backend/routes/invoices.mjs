@@ -141,6 +141,162 @@ router.post(
         doc.page.width - doc.page.margins.left - doc.page.margins.right;
       const LEFT_X = doc.page.margins.left;
       const RIGHT_X = doc.page.width - doc.page.margins.right;
+      
+      const generateFooter = () => {
+        // --- Start by adding a consistent space after the table ---
+        doc.moveDown(3);
+
+        // --- Calculate the Y position where the footer *will* start ---
+        const footerStartY = doc.y;
+
+        // --- Helper function to draw a single row in the summary ---
+        const drawSummaryRow = (label, value, options = {}) => {
+          const { font = FONT_NORMAL, size = 10, color = "black" } = options;
+          const rowY = doc.y; // Save the current Y position for this row
+          doc.font(font).fontSize(size).fillColor(color);
+          doc.text(label, RIGHT_X - 220, rowY, { width: 120, align: "left" });
+          doc.text(value, RIGHT_X - 100, rowY, { width: 100, align: "right" });
+          // We don't increment doc.y here; we let the `text` calls do it naturally.
+        };
+
+        // --- Helper for the short separator line ---
+        const drawSummarySeparator = () => {
+          doc.moveDown(0.5); // Add space before the line
+          const lineY = doc.y;
+          doc
+            .strokeColor("#aaaaaa")
+            .moveTo(RIGHT_X - 220, lineY)
+            .lineTo(RIGHT_X, lineY)
+            .stroke();
+          doc.moveDown(0.5); // Add space after the line
+        };
+
+        // --- Draw the Left Column (Notes/Terms) ---
+        const leftColX = LEFT_X;
+        doc.font(FONT_NORMAL).fontSize(9);
+        if (data.notes && data.notes.trim() !== "") {
+          doc.font(FONT_BOLD).text("Note:", leftColX, footerStartY);
+          doc.font(FONT_NORMAL).text(data.notes, { width: 250 });
+          doc.moveDown(1);
+        }
+        if (data.terms && data.terms.trim() !== "") {
+          doc.font(FONT_BOLD).text("Terms:", leftColX, doc.y);
+          doc.font(FONT_NORMAL).text(data.terms, { width: 250 });
+          doc.moveDown(1);
+        }
+        if (data.paymentInstruction && data.paymentInstruction.trim() !== "") {
+          doc.font(FONT_BOLD).text("Payment Instruction:", leftColX, doc.y);
+          doc.font(FONT_NORMAL).text(data.paymentInstruction, { width: 250 });
+        }
+        const leftColBottom = doc.y; // Record the bottom Y of the left column
+
+        // --- Draw the Right Column (Summary) ---
+        // Reset the Y cursor to the top of the footer for perfect alignment.
+        doc.y = footerStartY;
+
+        const {
+          subTotal,
+          taxAmount,
+          discountAmount,
+          shippingAmount,
+          grandTotal,
+          amountPaid,
+          balanceDue,
+        } = calculateTotals(data);
+
+        drawSummaryRow(
+          "Subtotal:",
+          `${data.currency || ""}${subTotal.toFixed(2)}`
+        );
+        if (data.taxEnabled)
+          drawSummaryRow(
+            `Tax (${data.taxValue}%):`,
+            `${data.currency || ""}${taxAmount.toFixed(2)}`
+          );
+        if (data.discountEnabled)
+          drawSummaryRow(
+            `Discount:`,
+            `-${data.currency || ""}${discountAmount.toFixed(2)}`,
+            { color: "#D32F2F" }
+          );
+        if (data.shippingEnabled)
+          drawSummaryRow(
+            "Shipping:",
+            `${data.currency || ""}${shippingAmount.toFixed(2)}`
+          );
+
+        drawSummarySeparator();
+
+        drawSummaryRow(
+          "Grand Total:",
+          `${data.currency || ""}${grandTotal.toFixed(2)}`,
+          { font: FONT_BOLD, size: 11 }
+        );
+        drawSummaryRow(
+          "Amount Paid:",
+          `${data.currency || ""}${amountPaid.toFixed(2)}`
+        );
+
+        drawSummarySeparator();
+
+        drawSummaryRow(
+          "Balance Due:",
+          `${data.currency || ""}${balanceDue.toFixed(2)}`,
+          { font: FONT_BOLD, size: 12, color: "#2E7D32" }
+        );
+        const rightColBottom = doc.y; // Record the bottom Y of the right column
+
+        // --- Position and Draw the Signature Block ---
+        // The signature starts below the TALLER of the two footer columns.
+        let signatureY = Math.max(leftColBottom, rightColBottom) + 20;
+
+        // The "just-in-time" page break check for the signature.
+        const SIGNATURE_HEIGHT = 60;
+        if (
+          signatureY >
+          doc.page.height - doc.page.margins.bottom - SIGNATURE_HEIGHT
+        ) {
+          doc.addPage();
+          signatureY = doc.page.margins.top; // Start at the top of the new page
+        }
+
+        if (data.signature) {
+          try {
+            const sigPart = data.signature.split(";base64,").pop();
+            const sigBuffer = Buffer.from(sigPart, "base64");
+            doc.image(sigBuffer, RIGHT_X - 150, signatureY, {
+              fit: [150, 40],
+              align: "center",
+            });
+          } catch (e) {
+            console.error("Signature processing failed:", e);
+          }
+        }
+
+        const lineY = signatureY + 45;
+        doc
+          .strokeColor("#000000")
+          .moveTo(RIGHT_X - 150, lineY)
+          .lineTo(RIGHT_X, lineY)
+          .stroke();
+
+        const fullName = `${data.firstName || ""} ${
+          data.lastName || ""
+        }`.trim();
+        doc
+          .font(FONT_BOLD)
+          .fontSize(9)
+          .text(fullName, RIGHT_X - 150, lineY + 5, {
+            width: 150,
+            align: "center",
+          });
+        doc
+          .font(FONT_NORMAL)
+          .text(data.userTitle || "Authorized Signature", {
+            width: 150,
+            align: "center",
+          });
+      };
 
       // --- 3. HELPER FUNCTIONS ---
       const drawLine = (y) =>
@@ -341,183 +497,61 @@ router.post(
         doc.moveDown(2);
       }
       doc.moveDown(3);
-
-      // Check if we need a new page before starting the footer.
-      if (doc.y > doc.page.height - doc.page.margins.bottom - 150) {
-        // 150 is approx footer height
-        doc.addPage();
-      }
-      let footerTopY = doc.y; // This is the starting Y for BOTH columns.
-
-      const leftFooterX = LEFT_X;
-      const rightFooterX = RIGHT_X - 200; // Adjusted for better alignment
-
-      // --- Left Column ---
-      doc.fillColor(COLOR_SECONDARY_TEXT).fontSize(9);
-
-      // We use `doc.y` for the first item in a chained command block to position it,
-      // subsequent `text` calls in the chain flow naturally.
-      if (data.paymentInstruction) {
-        doc
-          .font(FONT_BOLD)
-          .text("Payment Instruction:", leftFooterX, footerTopY) // Use `footerTopY` to start
-          .font(FONT_NORMAL)
-          .text(data.paymentInstruction, { width: 250 });
-        doc.moveDown(1);
-      }
-      if (data.accountDetails) {
-        doc
-          .font(FONT_BOLD)
-          .text("Bank Details:", leftFooterX, doc.y)
-          .font(FONT_NORMAL)
-          .text(data.accountDetails, { width: 250 });
-        doc.moveDown(1);
-      }
-      if (data.terms) {
-        doc
-          .font(FONT_BOLD)
-          .text("Terms:", leftFooterX, doc.y)
-          .font(FONT_NORMAL)
-          .text(data.terms, { width: 250 });
-        doc.moveDown(1);
-      }
-      if (data.notes) {
-        doc
-          .font(FONT_BOLD)
-          .text("Note:", leftFooterX, doc.y)
-          .font(FONT_NORMAL)
-          .text(data.notes, { width: 250 });
-      }
-
-      // --- Right Column ---
-      const calculatedGrandTotal = (data.sections || []).reduce(
-        (t, s) =>
-          t +
-          (s.items || []).reduce(
-            (st, i) => st + (parseFloat(i.total_price) || 0), // Switched to Total_Price for consistency
-            0
-          ),
-        0
-      );
-      const grandTotal =
-        parseFloat(data.manualGrandTotal) || calculatedGrandTotal;
-      const amountPaid = parseFloat(data.amountPaid) || 0;
-      const balanceDue = grandTotal - amountPaid;
-
-      // ✅ We reuse `footerTopY` to start the right column at the same height.
-      let summaryY = footerTopY;
-
-      const drawSummaryLine = (
-        label,
-        value,
-        font = FONT_NORMAL,
-        size = 10,
-        color = COLOR_PRIMARY_TEXT
-      ) => {
-        doc.font(font).fontSize(size).fillColor(color);
-        // Draw the label
-        doc.text(label, rightFooterX, summaryY, { width: 100, align: "left" });
-        // Draw the value, aligned to the far right of the page
-        doc.text(value, RIGHT_X - 100, summaryY, {
-          width: 100,
-          align: "right",
-        });
-      };
-
-      // Helper to draw a short line just in the summary column
-      const drawSummarySeparator = (y) => {
-        doc
-          .strokeColor("#aaaaaa")
-          .lineWidth(0.5)
-          .moveTo(rightFooterX, y)
-          .lineTo(RIGHT_X, y)
-          .stroke();
-      };
-
-      // Draw the summary lines using the helper
-      doc.font(FONT_NORMAL).fontSize(10).fillColor(COLOR_PRIMARY_TEXT);
-      drawSummaryLine(
-        "Subtotal:",
-        `${data.currency || ""}${calculatedGrandTotal.toFixed(2)}`
-      );
-      summaryY += 11;
-      drawSummarySeparator(summaryY);
-      summaryY += 15;
-
-      drawSummaryLine(
-        "Total:",
-        `${data.currency || ""}${grandTotal.toFixed(2)}`,
-        FONT_BOLD,
-        11
-      );
-      summaryY += 15;
-      drawSummaryLine(
-        "Amount Paid:",
-        `${data.currency || ""}${amountPaid.toFixed(2)}`
-      );
-
-      // ✅ Add a final line before the Balance Due
-      summaryY += 15;
-      drawSummarySeparator(summaryY);
-      summaryY += 10;
-
-      drawSummaryLine(
-        "Balance Due:",
-        `${data.currency || ""}${balanceDue.toFixed(2)}`,
-        FONT_BOLD,
-        12,
-        "#008000"
-      );
-
-      // --- SIGNATURE ---
-      const signatureY = doc.page.height - doc.page.margins.bottom - 80;
-      let currentY = signatureY;
-      if (data.signature) {
-        try {
-          const sigPart = data.signature.split(";base64,").pop();
-          const sigBuffer = Buffer.from(sigPart, "base64");
-          doc.image(sigBuffer, RIGHT_X - 200, signatureY, {
-            fit: [150, 40],
-            align: "right",
-          });
-          currentY += 45;
-        } catch (e) {
-          console.error("Signature processing failed:", e);
-        }
-      }
-      doc
-        .strokeColor(COLOR_PRIMARY_TEXT)
-        .moveTo(RIGHT_X - 160, signatureY + 45)
-        .lineTo(RIGHT_X, signatureY + 45)
-        .stroke();
-
-      const fullName = `${data.firstName || ""} ${data.lastName || ""}`.trim();
-
-      // ✅ Draw the full name at the new `currentY` position.
-      doc
-        .font(FONT_BOLD)
-        .fontSize(10)
-        .text(fullName, RIGHT_X - 150, currentY, {
-          width: 150,
-          align: "center",
-        });
-
-      // Move the cursor down for the next line of text.
-      currentY += 15; // Approx height of the name line.
-
-      // --- Draw the User Title ---
-      // ✅ Draw the user's title at the final `currentY` position.
-      doc
-        .font(FONT_NORMAL)
-        .fontSize(9)
-        .text(
-          data.userTitle || "Authorized Signature",
-          RIGHT_X - 150,
-          currentY,
-          { width: 150, align: "center" }
+      const calculateTotals = (invoiceData) => {
+        const subTotal = (invoiceData.sections || []).reduce(
+          (total, section) =>
+            total +
+            (section.items || []).reduce(
+              (sectionTotal, item) =>
+                sectionTotal + (parseFloat(item.total_price) || 0),
+              0
+            ),
+          0
         );
-      // --- FINALIZE AND SEND ---
-      doc.end();
+
+        let taxAmount = 0;
+        if (invoiceData.taxEnabled) {
+          const taxVal = parseFloat(invoiceData.taxValue) || 0;
+          taxAmount =
+            invoiceData.taxType === "percentage"
+              ? subTotal * (taxVal / 100)
+              : taxVal;
+        }
+
+        let discountAmount = 0;
+        if (invoiceData.discountEnabled) {
+          const discountVal = parseFloat(invoiceData.discountValue) || 0;
+          discountAmount =
+            invoiceData.discountType === "percentage"
+              ? subTotal * (discountVal / 100)
+              : discountVal;
+        }
+
+        const shippingAmount = invoiceData.shippingEnabled
+          ? parseFloat(invoiceData.shippingValue) || 0
+          : 0;
+
+        const grandTotalBeforeManual =
+          subTotal + taxAmount - discountAmount + shippingAmount;
+        const grandTotal =
+          parseFloat(invoiceData.manualGrandTotal) || grandTotalBeforeManual;
+        const amountPaid = parseFloat(invoiceData.amountPaid) || 0;
+        const balanceDue = grandTotal - amountPaid;
+
+        return {
+          subTotal,
+          taxAmount,
+          discountAmount,
+          shippingAmount,
+          grandTotal,
+          amountPaid,
+          balanceDue,
+        };
+      };
+
+       generateFooter();
+       doc.end();
+     
     } catch (error) {
       console.error("Failed to generate PDF:", error);
       res.status(500).send("An error occurred while generating the PDF.");

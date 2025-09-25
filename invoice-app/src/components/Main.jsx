@@ -1,42 +1,40 @@
-import React from 'react'
-import MenuIcon from '@mui/icons-material/Menu'
-import { useContext, useState } from 'react'
-import { InvoiceContext } from './InvoiceProvider'
-import styles from './Invoice.module.css'
-import {Stack, Typography, Button} from '@mui/material'
-import { nanoid } from 'nanoid';
-import InvoiceTable from './InvoiceTable'
-import Summary from './Summary'
-
+import React, { useContext } from 'react';
+import { InvoiceContext } from './InvoiceProvider';
+import { calculateTotals } from './TotalPrice';
+import { Stack, Typography, TextField, /* ... */ } from '@mui/material';
 
 function Main() {
-    const {invoiceData,updateField, addItem, removeItem, updateItem,handleLogoUpload,
-          addSection,updateSectionTitle,removeSection,calculatedGrandTotal,newerItem, setNewerItem, handleAddItem, handleInputChanges 
-        } = useContext(InvoiceContext);
-         
+  const { currentInvoice, setCurrentInvoice } = useContext(InvoiceContext);
+  if (!currentInvoice) return <div>Loading...</div>;
+  const { subTotal, taxAmount, discountAmount, shippingAmount, grandTotal, balanceDue } = calculateTotals(currentInvoice);
   return (
-    <Stack>
-        {invoiceData.sections.map((section, index) => (
-        <div key={section.id} className="section-container" style={{ marginBottom: '30px', border: '1px solid #ddd', padding: '15px' }}>
-          
-          <input 
-            type="text"
-            value={section.title}
-            onChange={(e) => updateSectionTitle(section.id, e.target.value)}
-            placeholder={`Section ${index + 1} Title`}
-            style={{ fontSize: '1.5em', border: 'none', marginBottom: '10px' }}
-          />
-          <ItemForm sectionId={section.id} />
-          <InvoiceTable section={section} />
+    <Stack spacing={1.5} sx={{ /* ... */ }}>
+        <Typography variant="h6">Summary</Typography>
+        
+        <Stack direction="row" justifyContent="space-between">
+            <Typography>Subtotal:</Typography>
+            <Typography>{currentInvoice.currency} {subTotal.toFixed(2)}</Typography>
+        </Stack>
 
-          
+        {/* --- All your conditional inputs for Tax, Discount, Shipping --- */}
+        {/* They remain the same, as they are for *setting* the values */}
 
-        </div>
-      ))}
-      <button onClick={addSection}>+ Add New Section</button>
-      
+        <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h6">Grand Total:</Typography>
+            <Typography variant="h6">{currentInvoice.currency} {grandTotal.toFixed(2)}</Typography>
+        </Stack>
+        
+        {/* Input for Amount Paid */}
+        <Stack direction="row" justifyContent="space-between">
+            <Typography>Amount Paid:</Typography>
+            <TextField type="number" name="amountPaid" /* ... */ />
+        </Stack>
+        
+        <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h6">Balance Due:</Typography>
+            <Typography variant="h6" color="green">{currentInvoice.currency} {balanceDue.toFixed(2)}</Typography>
+        </Stack>
     </Stack>
-  )
+  );
 }
-
-export default Main
+export default Main;

@@ -23,7 +23,7 @@ function LogoUploader({ currentLogo, onLogoChange }) {
 
   return (
     <Stack spacing={2}  width='100%' >
-      <Typography variant="subtitle1">Upload your Compan's Logo</Typography>
+      <Typography variant="subtitle1">Upload your Company's Logo</Typography>
       <input
         type="file"
         id="logo-upload"

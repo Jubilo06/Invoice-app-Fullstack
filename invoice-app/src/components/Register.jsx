@@ -54,20 +54,20 @@ function Register() {
                 <Stack direction='row' width="100%" spacing={2} justifyContent="center" alignItems='center'>
                     <Stack width="40%" justifyContent="center" alignItems='center'>
                         <input type='text' name='firstName' value={formData.firstName} onChange={handleChange} 
-                        placeholder='your firstname' style={{width:"90%", height:"30px",borderRadius:"5px 5px"}}  />
+                        placeholder='your firstname' style={{width:"90%",textIndent:'5px', height:"40px",borderRadius:"5px 5px"}}  />
                     </Stack>
                     <Stack width="40%" justifyContent="center" alignItems='center'>
                         <input type='text' name='lastName' value={formData.lastName} onChange={handleChange} 
-                        placeholder='your lastname' style={{width:"90%", height:"30px",borderRadius:'5px 5px'}}/>
+                        placeholder='your lastname' style={{width:"90%",textIndent:'5px', height:"40px",borderRadius:'5px 5px'}}/>
                     </Stack>
                 </Stack>
                 <Stack width="100%" justifyContent="center" alignItems='center'>
                     <input type='text' name='username' value={formData.username} onChange={handleChange} 
-                    placeholder='your username' style={{width:"80%", height:"30px",borderRadius:'5px 5px'}} />
+                    placeholder='your username' style={{width:"80%",textIndent:'5px', height:"40px",borderRadius:'5px 5px'}} />
                 </Stack>
                 <Stack width="100%"justifyContent="center" alignItems='center'>
                     <input type='password' name='password'  value={formData.password} onChange={handleChange} 
-                    placeholder='password' style={{width:"80%", height:"30px", borderRadius:'5px 5px'}} />
+                    placeholder='password' style={{width:"80%",textIndent:'5px', height:"40px", borderRadius:'5px 5px'}} />
                 </Stack>
                 <Stack justifyContent="center" alignItems='center' width="100%" spacing={2}>
                     <Typography color='ivory'>Existing user?&nbsp;&nbsp; <Link style={{textDecoration:'none', color:'white'}} to="/login">sign in</Link></Typography>

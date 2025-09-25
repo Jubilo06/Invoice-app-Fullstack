@@ -10,6 +10,8 @@ import SignatureCanvas from 'react-signature-canvas';
 import LogoUploader from './LogoUpLoader'
 import api from "./Api";
 import src20 from '../assets/src20.jpg'
+import Aos from 'aos'
+import 'aos/dist/aos.css'
 
 
 function Invoice() {
@@ -18,6 +20,9 @@ function Invoice() {
     const { user,updateUserProfile, deleteAccount, isLoading } = useContext(AuthContext);
     const [isSaving, setIsSaving] = useState(false);
     const navigate=useNavigate()
+    useEffect(()=>{
+          Aos.init({duration:2000})
+    },[])
 
     const [profileData, setProfileData] = useState({
       firstName: '',
@@ -121,6 +126,12 @@ function Invoice() {
     spacing={2} direction="column" height='auto'  width="100%" divider={<Divider orientation="horizontal" flexItem />}
     sx={{backgroundImage:`url(${src20})`, backgroundRepeat:"no-repeat", backgroundSize: 'cover',
                     backgroundPosition: 'center'}}>
+      <Stack width='100%' height={{xs:200,sm:100}} className={styles.glass3d} justifyContent='center' alignItems='center'>
+        <Typography data-aos='zoom-in' width={{xs:'96%', sm:'90%',md:'98%'}}  textAlign='center'>Welcome, {user.firstName} This is your central hub for all your company details. 
+        The information you save here will be automatically 
+        pre-filled on every new invoice, quotation, or document you create. Fill it out once, and save time forever.
+        </Typography>
+      </Stack>
       <form onSubmit={handleUpdate} style={{width:'100%'}}>
         <Stack height='auto'  width={{xs:'80%', sm:"60%", md:'40%', lg:'40%'}} borderRadius="1px" 
         justifySelf='center' alignSelf='center' my={10} divider={<Divider orientation="horizontal" flexItem />}
@@ -247,8 +258,8 @@ function Invoice() {
                         <Button sx={{backgroundColor:"#060010", color:'whitesmoke',textTransform:'capitalize'}} onClick={saveDefaultSignature}>Save Signature</Button>
                       </Stack>
                       {profileData.signature && (
-                          <Stack justifySelf='center' alignSelf='center'>
-                            <h4>Your Saved Signature:</h4>
+                          <Stack justifySelf='center' alignSelf='center' bgcolor='white'>
+                            <h4 style={{color:'black', alignSelf:'center'}}>Your Saved Signature:</h4>
                             <img src={profileData.signature} alt="Saved Signature" style={{ width: 200 }} />
                           </Stack>
                       )}
@@ -262,18 +273,7 @@ function Invoice() {
             {isSaving ? 'Saving...' : 'Save Profile Changes'}
           </button></Stack>
         </Stack>
-          <Stack pb={2} my={3} spacing={3} className={styles.delete} width='98%' border='1px solid transparent'
-          justifySelf='center' alignSelf='center'>
-            <Typography pt={2} fontWeight={700} fontSize={{xs:'25px'}} color="red" textAlign='center'>Delete account permanently</Typography>
-            <Typography variant="h6" textAlign='center' color='warning'>
-             This action cannot be undone ⚠
-            </Typography>
-            <Button sx={{width:'100px', justifySelf:"center", alignSelf:'center',backgroundColor:"#060010", 
-            textTransform:'capitalize', color:'white', fontSize:"20px"}}  
-            variant="outlined" onClick={handleDelete}>
-              Delete
-            </Button>
-          </Stack>
+          
 
         </Stack>
       </form>
