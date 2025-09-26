@@ -53,7 +53,7 @@ function Navbar() {
           to={user ? "/dashboard" : "/"} 
           sx={{ flexGrow: 1, textDecoration: 'none', color:'#060010' }}
         >
-          QuickBill 
+          FastBill 
         </Typography>
 
         {/* --- DESKTOP VIEW (Visible on `md` screens and up) --- */}
