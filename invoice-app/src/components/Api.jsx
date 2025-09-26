@@ -1,11 +1,11 @@
 import axios from 'axios';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '',
-  timeout: 20000,  // Longer for mobile
+  timeout: 30000,  // Longer for mobile
     withCredentials: true,  // Cross-origin cookies
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      'Accept': 'application/json, text/plain, */*',
       'X-Requested-With': 'XMLHttpRequest'  // Triggers preflight properly
     }
 });
@@ -19,24 +19,25 @@ api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = token;   }
-    console.log('API Request Details:', {
+    console.log('Sending Request (Preflight if needed):', {
       method: config.method,
       url: config.url,
-      baseURL: config.baseURL,
-      fullURL: `${config.baseURL}${config.url}`,
-      withCredentials: config.withCredentials,
-      origin: window.location.origin
+      headers: config.headers,
+      withCredentials: config.withCredentials
     });
     return config;
-  });
+  },error => {
+    console.error('Request Setup Error:', error);
+    return Promise.reject(error);
+  }
+);
   api.interceptors.response.use(
-    response => {
-      console.log('API Success:', response.status, response.config.url);
-      return response;
-    },
+    response => response,
     error => {
-      console.error('API Failure Details:', {
-        status: error.response?.status || 'No Response',
+      const corsError = error.message.includes('CORS') || error.message.includes('Network Error') || error.code === 'ERR_NETWORK';
+      console.error('API Error (CORS Likely?):', {
+        isCors: corsError,
+        status: error.response?.status || 'Blocked (0)',
         code: error.code,
         message: error.message,
         url: error.config?.url
