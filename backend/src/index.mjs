@@ -17,19 +17,37 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app=express()
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Allow any origin
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow all methods
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  ); // Allow all headers
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*"); // Allow any origin
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow all methods
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   ); // Allow all headers
+//   if (req.method === "OPTIONS") {
+//     return res.status(200).end();
+//   }
 
-  next();
-});
+//   next();
+// });
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        origin.includes("vercel.app") ||
+        origin.includes("localhost")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS blocked"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: true }));
 app.use(passport.initialize());
