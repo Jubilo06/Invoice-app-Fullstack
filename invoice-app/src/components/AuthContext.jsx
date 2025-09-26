@@ -23,8 +23,35 @@ export const AuthProvider = ({ children }) => {
     try {
       await api.post('/api/register', userData);
     } catch (error) {
-      console.error("Error from API call in context:", error); 
-      throw new Error(error.response?.data || 'An unknown error occurred.');
+      // console.error("Error from API call in context:", error); 
+      // throw new Error(error.response?.data || 'An unknown error occurred.');
+      console.error('Full Registration Error on Device:', {
+        message: error.message,
+        code: error.code,
+        status: error.response?.status,
+        data: error.response?.data,
+        config: { url: error.config?.url, method: error.config?.method },
+        origin: window.location.origin,
+        userAgent: navigator.userAgent
+      });
+      let errorMessage = 'An unknown error occurred.';
+      
+      if (error.code === 'ERR_NETWORK' || error.message.includes('Network Error') || error.response?.status === 0) {
+        errorMessage = 'Network/CORS error: Request blocked. Check connection or browser settings.';
+      } else if (error.response?.status === 403 || error.message.includes('CORS')) {
+        errorMessage = 'CORS blocked: Origin not allowed. Update server config.';
+      } else if (error.response?.status === 401) {
+        errorMessage = 'Access denied. Try incognito mode.';
+      } else if (error.response?.status >= 400 && error.response?.status < 500) {
+        errorMessage = error.response.data?.error || 'Invalid data. Check form.';
+      } else if (error.response?.status >= 500) {
+        errorMessage = 'Server error. Check Vercel logs.';
+      } else {
+        errorMessage = error.message || 'Registration failed. Please try again.';
+      }
+      
+      throw new Error(errorMessage);  // Now shows specific cause
+    
     }
   };
   
