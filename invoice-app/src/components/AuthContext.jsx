@@ -78,6 +78,12 @@ export const AuthProvider = ({ children }) => {
       
     } catch (error) {
       console.error("AuthContext: Error during login process:", error);
+      let message = 'Login failed. Please check your credentials.';
+        if (error.code === 'ERR_NETWORK') {
+          message = 'Network error: Check API URL (localhost on deployed site?).';
+        } else if (error.response?.status === 401) {
+          message = 'Invalid username or password.';
+        }
       throw error; 
     }
   };
