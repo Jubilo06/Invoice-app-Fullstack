@@ -32,20 +32,16 @@ const app=express()
 // });
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (
-        !origin ||
-        origin.includes("vercel.app") ||
-        origin.includes("localhost")
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS blocked"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: true, // Allow all origins (quick fix; restrict later)
+    credentials: true, // Essential for cookies/sessions on mobile
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cookie",
+      "X-Requested-With",
+    ],
+    exposedHeaders: ["Set-Cookie"], // Allow backend to set cookies
   })
 );
 app.use(express.json({ limit: "5mb" }));
