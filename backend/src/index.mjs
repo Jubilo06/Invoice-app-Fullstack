@@ -30,51 +30,51 @@ const app=express()
 
 //   next();
 // });
-app.options("*", cors());
-// app.use(
-//   cors({
-//     origin: true, // Allow all origins (quick fix; restrict later)
-//     credentials: true, // Essential for cookies/sessions on mobile
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
-//     allowedHeaders: [
-//       "Content-Type",
-//       "Authorization",
-//       "Cookie",
-//       "X-Requested-With",
-//     ],
-//     exposedHeaders: ["Set-Cookie"], // Allow backend to set cookies
-//   })
-// );
+// app.options("*", cors());
 app.use(
   cors({
-    origin: true, // Allow all origins (mobile/PC/Vercel)
-    credentials: true, // Cookies cross-origin
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"], // Include OPTIONS
+    origin: true, // Allow all origins (quick fix; restrict later)
+    credentials: true, // Essential for cookies/sessions on mobile
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
     allowedHeaders: [
       "Content-Type",
       "Authorization",
-      "X-Requested-With",
-      "Accept",
-      "Origin",
       "Cookie",
-      "Referer",
+      "X-Requested-With",
     ],
-    exposedHeaders: ["Set-Cookie", "Authorization"],
-    preflightContinue: false,
-    optionsSuccessStatus: 200, // Some browsers expect 200, not 204
+    exposedHeaders: ["Set-Cookie"], // Allow backend to set cookies
   })
 );
-app.use((req, res, next) => {
-  console.log(
-    `Vercel Request: ${req.method} ${req.path} | Origin: ${
-      req.headers.origin || "No Origin"
-    } | UA: ${req.headers["user-agent"]?.slice(0, 40)}`
-  );
-  if (req.method === "OPTIONS") {
-    console.log("OPTIONS Preflight Handled");
-  }
-  next();
-});
+// app.use(
+//   cors({
+//     origin: true, // Allow all origins (mobile/PC/Vercel)
+//     credentials: true, // Cookies cross-origin
+//     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"], // Include OPTIONS
+//     allowedHeaders: [
+//       "Content-Type",
+//       "Authorization",
+//       "X-Requested-With",
+//       "Accept",
+//       "Origin",
+//       "Cookie",
+//       "Referer",
+//     ],
+//     exposedHeaders: ["Set-Cookie", "Authorization"],
+//     preflightContinue: false,
+//     optionsSuccessStatus: 200, // Some browsers expect 200, not 204
+//   })
+// );
+// app.use((req, res, next) => {
+//   console.log(
+//     `Vercel Request: ${req.method} ${req.path} | Origin: ${
+//       req.headers.origin || "No Origin"
+//     } | UA: ${req.headers["user-agent"]?.slice(0, 40)}`
+//   );
+//   if (req.method === "OPTIONS") {
+//     console.log("OPTIONS Preflight Handled");
+//   }
+//   next();
+// });
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: true }));
 app.use(passport.initialize());
