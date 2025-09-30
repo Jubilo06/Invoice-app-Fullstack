@@ -1,16 +1,12 @@
 import axios from 'axios';
 
 const getBaseURL = () => {
-  // `import.meta.env.PROD` is a special variable provided by Vite.
-  // It is `true` when you run `npm run build` (like on Vercel).
-  // It is `false` when you run `npm run dev`.
   if (import.meta.env.PROD) {
-    // We are in production. The API is at the same domain.
-    // Use a relative path.
-    return 'https://fastbill-jubilo-projects.vercel.app';
+    // return 'https://fastbill-jubilo-projects.vercel.app';
+    return '/api'
   } else {
-    // We are in development. Use the local backend address.
-    return 'http://localhost:5014';
+    // return 'http://localhost:5014';
+     return import.meta.env.VITE_API_BASE_URL || 'http://localhost:5014/api';
   }
 };
 

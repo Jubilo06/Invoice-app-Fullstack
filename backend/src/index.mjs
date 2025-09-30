@@ -32,25 +32,7 @@ app.use(
     exposedHeaders: ["Set-Cookie"],
   })
 );
-// let allowedOrigin;
-// if (process.env.NODE_ENV === "production") {
-//   // In production, allow requests from your Vercel URL
-//   allowedOrigin = "https://fastbill-jubilo-projects.vercel.app";
-// } else {
-//   // allowedOrigin = /http:\/\/localhost:\d+/;
-//   allowedOrigin = 'http://localhost:5173'; // Replace 3000 with your client-side development port
-// }
 
-// // Configure CORS options
-// const corsOptions = {
-//   origin: allowedOrigin,
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   allowedHeaders: ["Content-Type", "X-Requested-With"],
-//   optionsSuccessStatus: 200,
-// };
-
-// // Use the CORS middleware
-// app.use(cors(corsOptions));
 
 
 app.use(express.json({ limit: "5mb" }));
