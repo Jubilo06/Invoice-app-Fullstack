@@ -17,64 +17,42 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app=express()
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*"); // Allow any origin
-//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow all methods
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   ); // Allow all headers
-//   if (req.method === "OPTIONS") {
-//     return res.status(200).end();
-//   }
 
-//   next();
-// });
-// app.options("*", cors());
-app.use(
-  cors({
-    origin: true, // Allow all origins (quick fix; restrict later)
-    credentials: true, // Essential for cookies/sessions on mobile
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cookie",
-      "X-Requested-With",
-    ],
-    exposedHeaders: ["Set-Cookie"], // Allow backend to set cookies
-  })
-);
 // app.use(
 //   cors({
-//     origin: true, // Allow all origins (mobile/PC/Vercel)
-//     credentials: true, // Cookies cross-origin
-//     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"], // Include OPTIONS
+//     origin: true, 
+//     credentials: true, 
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
 //     allowedHeaders: [
 //       "Content-Type",
 //       "Authorization",
-//       "X-Requested-With",
-//       "Accept",
-//       "Origin",
 //       "Cookie",
-//       "Referer",
+//       "X-Requested-With",
 //     ],
-//     exposedHeaders: ["Set-Cookie", "Authorization"],
-//     preflightContinue: false,
-//     optionsSuccessStatus: 200, // Some browsers expect 200, not 204
+//     exposedHeaders: ["Set-Cookie"],
 //   })
 // );
-// app.use((req, res, next) => {
-//   console.log(
-//     `Vercel Request: ${req.method} ${req.path} | Origin: ${
-//       req.headers.origin || "No Origin"
-//     } | UA: ${req.headers["user-agent"]?.slice(0, 40)}`
-//   );
-//   if (req.method === "OPTIONS") {
-//     console.log("OPTIONS Preflight Handled");
-//   }
-//   next();
-// });
+let allowedOrigin;
+if (process.env.NODE_ENV === "production") {
+  // In production, allow requests from your Vercel URL
+  allowedOrigin = "https://fastbill-jubilo-projects.vercel.app";
+} else {
+  // allowedOrigin = /http:\/\/localhost:\d+/;
+  allowedOrigin = 'http://localhost:5173'; // Replace 3000 with your client-side development port
+}
+
+// Configure CORS options
+const corsOptions = {
+  origin: allowedOrigin,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "X-Requested-With"],
+  optionsSuccessStatus: 200,
+};
+
+// Use the CORS middleware
+app.use(cors(corsOptions));
+
+
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: true }));
 app.use(passport.initialize());
