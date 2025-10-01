@@ -1,18 +1,25 @@
 import axios from 'axios';
 
-const getBaseURL = () => {
-  if (import.meta.env.PROD) {
-    // return 'https://fastbill-jubilo-projects.vercel.app';
-    return '/api'
-  } else {
-    // return 'http://localhost:5014';
-     return import.meta.env.VITE_API_BASE_URL || 'http://localhost:5014/api';
-  }
-};
+const isProduction = import.meta.env.PROD;
+const isDevelopment = import.meta.env.DEV;
 
-const baseURL = getBaseURL();
+// Get the Vercel-specific environment variable if it exists
+const vercelEnv = import.meta.env.VITE_VERCEL_ENV;
 
-console.log(`API is configured to use the base URL: ${baseURL}`);
+let baseURL;
+
+if (isProduction || vercelEnv === 'production' || vercelEnv === 'preview') {
+  // We are on a live Vercel deployment (either production or a preview branch).
+  // The API is at a relative path on the same domain.
+  baseURL = '/api';
+} else {
+  // We are in local development. Use the full localhost URL.
+  baseURL = 'http://localhost:5014/api';
+}
+
+console.log(`[API Config] Environment: ${isProduction ? 'Production' : 'Development'}`);
+console.log(`[API Config] Vercel Env: ${vercelEnv}`);
+console.log(`[API Config] Base URL set to: ${baseURL}`);
 const api = axios.create({
   baseURL: baseURL,
   timeout: 30000,  // Longer for mobile
