@@ -11,7 +11,7 @@ let baseURL;
 if (isProduction || vercelEnv === 'production' || vercelEnv === 'preview') {
   // We are on a live Vercel deployment (either production or a preview branch).
   // The API is at a relative path on the same domain.
-  baseURL = '/api';
+  baseURL = '/';
 } else {
   // We are in local development. Use the full localhost URL.
   baseURL = 'http://localhost:5014/api';
