@@ -21,7 +21,7 @@ router.get("/api/profile", ensureAuthenticated, (req, res) => {
 });
 
 // Door 1: Register a new user
-router.post("/register", async (req, res) => {
+router.post("/api/register", async (req, res) => {
   try {
     const { firstName, lastName, username, password } = req.body;
     const existingUser = await User.findOne({ username });

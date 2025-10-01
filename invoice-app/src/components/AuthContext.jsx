@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
    const register = async (userData) => {
     console.log("3. Inside the context's register function."); 
     try {
-      await api.post('/users/register', userData);
+      await api.post('/api/register', userData);
     } catch (error) {
       // console.error("Error from API call in context:", error); 
       // throw new Error(error.response?.data || 'An unknown error occurred.');

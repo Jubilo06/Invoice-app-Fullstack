@@ -7,11 +7,10 @@ import configurePassport from "../strategy/passport.mjs";
 import MongoStore from "connect-mongo";
 import dotenv from 'dotenv'
 import cors from 'cors'
-import usersRouter from "./users.mjs";
-import invoicesRouter from "./invoices.mjs";
 import routes from "../routes/index.mjs";
 import path from "path";
 import { fileURLToPath } from "url"; 
+import router from '../routes/index.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,8 +40,7 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: true }));
 app.use(passport.initialize());
 configurePassport(passport);
-app.use("/api/users", usersRouter);
-app.use("/api/invoices", invoicesRouter);
+app.use(router)
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("connected to Mongo atlas"))
