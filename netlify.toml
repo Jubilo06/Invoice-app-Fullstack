@@ -1,0 +1,25 @@
+# --- Build Settings ---
+[build]
+  # This command tells Netlify how to build your frontend.
+  # It navigates into the frontend folder and runs the build script.
+  command = "cd invoice-app && npm run build"
+  
+  # This tells Netlify where to find the final, built website files.
+  publish = "invoice-app/dist"
+  
+  # This tells Netlify where your serverless functions are.
+  functions = "netlify/functions"
+
+# --- Redirects and Rewrites (Routing Rules) ---
+[[redirects]]
+  # This rule directs all API calls to your backend function.
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200 # This makes it a "rewrite" (the URL doesn't change in the browser)
+
+[[redirects]]
+  # This is the "catch-all" rule for your React Single Page App.
+  # It ensures that if a user reloads on /dashboard, they are served index.html.
+  from = "/*"
+  to = "/index.html"
+  status = 200

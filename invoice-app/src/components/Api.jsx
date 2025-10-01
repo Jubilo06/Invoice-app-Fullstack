@@ -1,34 +1,16 @@
 import axios from 'axios';
 
-// const isProduction = import.meta.env.PROD;
-// const isDevelopment = import.meta.env.DEV;
+const getBaseURL = () => {
+  if (import.meta.env.PROD) {
+    return '/api'; 
+  } else {
+    return import.meta.env.VITE_API_BASE_URL || 'http://localhost:5014/api';
+  }
+};
 
-// // Get the Vercel-specific environment variable if it exists
-// const vercelEnv = import.meta.env.VITE_VERCEL_ENV;
-
-// let baseURL;
-
-// if (isProduction || vercelEnv === 'production' || vercelEnv === 'preview') {
-//   // We are on a live Vercel deployment (either production or a preview branch).
-//   // The API is at a relative path on the same domain.
-//   baseURL = '/';
-// } else {
-//   // We are in local development. Use the full localhost URL.
-//   baseURL = 'http://localhost:5014/api';
-// }
-
-// console.log(`[API Config] Environment: ${isProduction ? 'Production' : 'Development'}`);
-// console.log(`[API Config] Vercel Env: ${vercelEnv}`);
-// console.log(`[API Config] Base URL set to: ${baseURL}`);
-let baseURL;
-if (import.meta.env.PROD) {
-  // On Vercel, all calls are relative to the root of the domain.
-  baseURL = '/';
-} else {
-  // On local dev, use the full backend URL.
-  baseURL = 'http://localhost:5014';
-}
-console.log(`[AuthContext] API Base URL is: ${baseURL}`);
+const baseURL = getBaseURL();
+console.log(`[API Config] Running in ${import.meta.env.PROD ? 'Production' : 'Development'} mode.`);
+console.log(`[API Config] Base URL set to: ${baseURL}`);
 const api = axios.create({
   baseURL: baseURL,
   timeout: 30000,  // Longer for mobile
