@@ -1,0 +1,9 @@
+/* *{
+    outline: 1px solid red!important;
+} */
+body{
+    background-color: transparent;
+    height: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
