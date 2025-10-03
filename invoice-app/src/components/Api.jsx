@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const baseURL = "http://localhost:5014" || "/api";
+const baseURL = import.meta.env.PROD
+  ? 'https://fastbill-backend.onrender.com/api'
+  : 'http://localhost:5014';
 console.log(`[API Config] Running in ${import.meta.env.PROD ? 'Production' : 'Development'} mode.`);
 console.log(`[API Config] Base URL set to: ${baseURL}`);
 const api = axios.create({
