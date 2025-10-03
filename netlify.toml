@@ -1,6 +1,6 @@
 [build]
   base = "invoice-app"
-  command = pnpm install --frozen-lockfile && pnpm run build"
+  command = "pnpm install --frozen-lockfile && pnpm run build"
   publish = "dist"
   functions = "netlify/functions"
 
