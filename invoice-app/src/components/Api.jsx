@@ -1,14 +1,6 @@
 import axios from 'axios';
 
-const getBaseURL = () => {
-  if (import.meta.env.PROD) {
-    return '/api'; 
-  } else {
-    return import.meta.env.VITE_API_BASE_URL || 'http://localhost:5014/api';
-  }
-};
-
-const baseURL = getBaseURL();
+const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
 console.log(`[API Config] Running in ${import.meta.env.PROD ? 'Production' : 'Development'} mode.`);
 console.log(`[API Config] Base URL set to: ${baseURL}`);
 const api = axios.create({
