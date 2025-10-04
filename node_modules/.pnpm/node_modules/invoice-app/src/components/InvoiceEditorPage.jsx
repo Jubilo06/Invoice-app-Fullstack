@@ -12,6 +12,9 @@ import InvoiceItems from './InvoiceItems';
 import Summary from './Summary';
 import InvoiceOptions from './InvoiceOptions';
 import { InvoicePreview }  from './InvoicePreview';
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
+import InvoicePdf from './InvoicePdf';
+import BarcodeGenerator from './BarcodeGenerator';
 function InvoiceEditorPage() {
   const { user } = useContext(AuthContext);
   const { invoiceData, updateField,
@@ -20,6 +23,8 @@ function InvoiceEditorPage() {
   } = useContext(InvoiceContext);
   const navigate=useNavigate()
    const { invoiceId } = useParams();
+   const [isPreviewing, setIsPreviewing] = useState(false);
+   const [barcodeImage, setBarcodeImage] = useState(null);
   const [guestCompanyProfile, setGuestCompanyProfile] = useState({
     companyName: '', companyAddress: '',
         companyLogo:null,
@@ -39,7 +44,9 @@ function InvoiceEditorPage() {
     }
   }, [invoiceId, startNewInvoice]);
     
-  
+  const handleBarcodeGenerated = (imageDataUrl) => {
+    setBarcodeImage(imageDataUrl);
+  };
   const sigPadRef = useRef(null);
   const clearSignature = () => sigPadRef.current.clear();
  const saveSignature = () => {
@@ -92,6 +99,7 @@ function InvoiceEditorPage() {
   const safeCurrentInvoice = currentInvoice || {};
   const previewData = {
     ...safeCurrentInvoice,
+    barcodeImage: barcodeImage,
     ...(user && { 
         firstName:user.firstName,
         lastName:user.lastName,
@@ -115,6 +123,12 @@ function InvoiceEditorPage() {
       <Stack direction="column" width="100%" bgcolor='#060010'  spacing={2} justifySelf={{xs:"center"}} alignItems={{xs:"center"}}>
         <Stack justifySelf="center" alignSelf='center' width='90%' spacing={2} pt={2}>
           <Typography textAlign='center'>{currentInvoice._id ? 'Edit Invoice' : 'Create New Invoice'}</Typography>
+          <Stack>
+            <BarcodeGenerator 
+              value={currentInvoice?.invoiceNumber}
+              onBarcodeGenerated={handleBarcodeGenerated}
+            />
+          </Stack>
           <Typography textAlign='center'>Company Details</Typography>
                     {user ? (
             <Stack textAlign='center'>
@@ -413,18 +427,31 @@ function InvoiceEditorPage() {
         <Stack direction='row' spacing={2} my={2} justifyContent='center' alignItems='center'>
           <Button sx={{ borderRadius:'8px 8px', backgroundColor:'gold',color:'black'}} onClick={handleSave}>{currentInvoice._id ? 'Save Changes' : 'Create Invoice'}</Button>
         </Stack>
-        <Stack>
-            <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-              <Stack width='794px'>
-                <InvoicePreview ref={componentToPrintRef} data={previewData} />      
-              </Stack>
-            </div>
-        </Stack>
+        
       </Stack>
-      <Stack width='80%' overflow='auto'><InvoicePreview data={previewData}  /></Stack>
-      <Stack pb={4}>
-        <Button sx={{ borderRadius:'8px 8px', backgroundColor:'gold', color:'black'}}  onClick={handleDownload}>Save as PDF</Button>
-      </Stack>
+      <div className="editor-panel">
+        <button onClick={() => setIsPreviewing(!isPreviewing)}>
+          {isPreviewing ? 'Close Preview' : 'Show PDF Preview'}
+        </button>
+        
+        <PDFDownloadLink
+          document={<InvoicePdf data={previewData} />}
+          fileName={`Invoice-${previewData.invoiceNumber}.pdf`}
+        >
+          {({ blob, url, loading, error }) => 
+            loading ? 'Preparing PDF...' : 'Download PDF'
+          }
+        </PDFDownloadLink>
+      </div>
+    
+    {/* The live preview panel */}
+      <div className="preview-panel">
+        {isPreviewing && (
+          <PDFViewer style={{ width: '100%', height: '100%' }}>
+            <InvoicePdf data={previewData} />
+          </PDFViewer>
+        )}
+      </div>
     </Stack>
   )
 }

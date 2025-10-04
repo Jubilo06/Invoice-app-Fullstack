@@ -233,20 +233,7 @@ function Invoice() {
                 placeholder= "Describe your company"
                 onChange={handleChange}
               />
-              <TextField
-                sx={{ width:'90%',
-                  '& .MuiInputLabel-root': { color: 'black', width:'80%', fontSize:'15px'},'& .MuiInputLabel-root.Mui-focused': { color: 'black',},
-                  '& .MuiOutlinedInput-root': {'&': { backgroundColor: 'white',},'& fieldset': {borderColor: 'grey'},
-                  '&:hover fieldset': {borderColor: 'darkgrey',}, '&.Mui-focused fieldset': {borderColor: 'transparent',},
-                    '& .MuiOutlinedInput-input': {color: 'black',width:'100%', fontWeight:'bolder', height:50 },
-                },}}
-                type="text"
-                label="user's Position"
-                name='userTitle'
-                value={profileData.userTitle}
-                placeholder= "Describe your position in the company"
-                onChange={handleChange}
-              />
+              
               <fieldset style={{width:"80%", justifySelf:'center', alignSelf:'center', }}>
                 <Stack direction='column' spacing={2} justifySelf='center' alignSelf='center'>
                   <legend>Signature</legend>

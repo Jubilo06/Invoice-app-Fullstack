@@ -9,13 +9,7 @@ export const InvoicePreview = React.forwardRef(({ data }, ref) => {
   if (!data || !Array.isArray(data.sections)) {
     return <div ref={ref}>Preparing preview...</div>;
   }
-  // const calculatedGrandTotal = data.sections.reduce((total, section) => 
-  //   total + (section?.items?.reduce((sectionTotal, item) => 
-  //     sectionTotal + (parseFloat(item.total_price) || 0), 0) || 0), 
-  //   0);
-  // const grandTotal = parseFloat(data.manualGrandTotal) || calculatedGrandTotal;
-  // const amountPaid = parseFloat(data.amountPaid) || 0;
-  // const balanceDue = grandTotal - amountPaid;
+  
 const { subTotal, taxAmount, discountAmount, shippingAmount, 
   grandTotal, amountPaid, balanceDue } = calculateTotals(data);
 

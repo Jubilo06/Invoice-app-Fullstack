@@ -40,7 +40,7 @@ function Register() {
     }
   };
   return (
-    <Stack width="100%" height={{xs:'900px', sm:'1200px',md:'800px'}}  bgcolor='white' justifyContent="center" alignItems='center'
+    <Stack width="100%" height={{xs:'900px', sm:'1200px',md:'1200px'}}  bgcolor='white' justifyContent="center" alignItems='center'
     sx={{backgroundImage:`url(${src10})`, backgroundRepeat:"no-repeat", backgroundSize: 'cover',
             backgroundPosition: 'center'}}>
         <form onSubmit={handleSubmit} style={{width:'100%'}} >
@@ -70,7 +70,7 @@ function Register() {
                     placeholder='password' style={{width:"80%",textIndent:'5px', height:"40px", borderRadius:'5px 5px'}} />
                 </Stack>
                 <Stack justifyContent="center" alignItems='center' width="100%" spacing={2}>
-                    <Typography color='ivory'>Existing user?&nbsp;&nbsp; <Link style={{textDecoration:'none', color:'white'}} to="/login">sign in</Link></Typography>
+                    <Typography color='ivory'>Existing user?&nbsp;&nbsp; <Link style={{ color:'white'}} to="/login">sign in</Link></Typography>
                     <Button loading={loading} type='submit' style={{width:'100px', height:'30px', textAlign:'center',border:'1px solid white', 
                     borderRadius:"5px 5px", backgroundColor:"#060010", color:'white', marginBottom:'10px', textTransform:'capitalize'}} 
                      disabled={!formData.username || !formData.password}>Sign Up</Button>

@@ -46,7 +46,7 @@ function Login() {
     setShowPassword(prev => !prev);
   };
     return (
-    <Stack width="100%" justifyContent="center" alignItems='center' height={{xs:'900px', sm:'1200px', md:'800px'}} overflow='hidden'  pb={2}  bgcolor='white'
+    <Stack width="100%" justifyContent="center" alignItems='center' height={{xs:'900px', sm:'1200px', md:'1200px'}} overflow='hidden'  pb={2}  bgcolor='white'
     sx={{backgroundImage:`url(${src3})`, backgroundRepeat:"no-repeat", backgroundSize: 'cover',
                 backgroundPosition: 'center'}}>
         <form onSubmit={handleSubmit} style={{width:'100%'}}>

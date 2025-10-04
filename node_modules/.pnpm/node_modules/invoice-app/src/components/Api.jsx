@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseURL = import.meta.env.PROD
-  ? 'https://fastbill-backend.onrender.com/api'
+  ? 'https://fastbill-backend.onrender.com'
   : 'http://localhost:5014';
 console.log(`[API Config] Running in ${import.meta.env.PROD ? 'Production' : 'Development'} mode.`);
 console.log(`[API Config] Base URL set to: ${baseURL}`);
@@ -15,12 +15,7 @@ const api = axios.create({
       'X-Requested-With': 'XMLHttpRequest'  // Triggers preflight properly
     }
 });
-// api.interceptors.request.use(config => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     config.headers.Authorization = token;   }
-//   return config;
-// });
+
 api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {

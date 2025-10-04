@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from "vite-plugin-pwa"; 
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 
 export default defineConfig({
@@ -12,9 +13,10 @@ export default defineConfig({
       filename: "sw.js",
       registerType: "autoUpdate",
       devOptions: {
-        enabled: true, 
-        type: "module", 
+        enabled: true,
+        type: "module",
       },
+
       manifest: {
         name: "Jubilo Invoice App",
         short_name: "InvoiceApp",
@@ -51,4 +53,5 @@ export default defineConfig({
       },
     }),
   ],
+  
 });
