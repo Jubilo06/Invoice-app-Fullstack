@@ -135,7 +135,7 @@ function Profile() {
         )
         }
       </Stack>
-      <Stack className={styles.delete} spacing={3} pb={6} width='98%' border='1px solid transparent'
+      <Stack className={styles.delete} spacing={3}  pb={6} width='98%' border='1px solid transparent'
             justifyContent='center' alignItems='center'>
           <Typography pt={2} fontWeight={700} fontSize={{xs:'25px'}} color="red" textAlign='center'>Delete account permanently</Typography>
           <Typography variant="h6" textAlign='center'  >

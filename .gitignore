@@ -7,6 +7,9 @@ invoice-app/build/
 invoice-app/dist-ssr/
 invoice-app/*.local/
 backend/.env
+.pnpm-store/
+pnpm-lock.yaml
+test_rsa_privkey.pem
 # Logs
 logs
 *.log
