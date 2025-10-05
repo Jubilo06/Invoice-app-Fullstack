@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseURL = import.meta.env.PROD
-  ? 'https://fastbill-backend.onrender.com/api'
+  ? 'https://fastbill-backend.onrender.com'
   : 'http://localhost:5014';
 console.log(`[API Config] Running in ${import.meta.env.PROD ? 'Production' : 'Development'} mode.`);
 console.log(`[API Config] Base URL set to: ${baseURL}`);
