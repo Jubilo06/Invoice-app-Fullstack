@@ -26,53 +26,57 @@ function Summary() {
         {currentInvoice.taxEnabled && (
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography>Tax:</Typography>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <TextField type="number" name="taxValue" size="small"  value={currentInvoice.taxValue || ''} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)} 
-                sx={{width:'200px',
-                      '& .MuiInputLabel-root': { color: 'white',},'& .MuiInputLabel-root.Mui-focused': { color: 'black',},
-                      '& .MuiOutlinedInput-root': {'&': { backgroundColor: 'white',},'& fieldset': {borderColor: 'white',},
-                      '&:hover fieldset': {borderColor: 'white',}, '&.Mui-focused fieldset': {borderColor: 'white',},
-                        '& .MuiOutlinedInput-input': {color: 'black', },
-                      },
-                    }}  
-              />
-              <Select 
-              sx={{color: 'white','& .MuiSelect-icon': {
-                  color: 'white', },'& .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
-                '&:hover .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
-              }}  
-          name="taxType"  size="small" value={currentInvoice.taxType || 'percentage'} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)}>
-                <MenuItem color='white' value="percentage">%</MenuItem>
-                <MenuItem color='white' value="fixed">{currentInvoice.currency}</MenuItem>
-              </Select>
-              <Typography>({currentInvoice.currency}{taxAmount.toFixed(2)})</Typography>
-            </Stack>
-          </Stack>
-        )}
-        {currentInvoice.discountEnabled && (
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography>Discount:</Typography>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <TextField type="number" name="discountValue" size="small"  value={currentInvoice.discountValue || ''} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)} 
-                sx={{width:'200px',
-                      '& .MuiInputLabel-root': { color: 'white',},'& .MuiInputLabel-root.Mui-focused': { color: 'black',},
-                      '& .MuiOutlinedInput-root': {'&': { backgroundColor: 'white',},'& fieldset': {borderColor: 'white',},
-                      '&:hover fieldset': {borderColor: 'white',}, '&.Mui-focused fieldset': {borderColor: 'white',},
-                        '& .MuiOutlinedInput-input': {color: 'black', },
-                      },
-                }}  
-              />
-              <Select 
+            <Stack direction={{xs:'column', sm:'column', md:'row'}}  spacing={1} alignItems="center">
+              <Stack direction="row">
+                <TextField type="number" name="taxValue" size="small"  value={currentInvoice.taxValue || ''} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)} 
+                  sx={{width:{xs:'50px', sm:'100px'},
+                        '& .MuiInputLabel-root': { color: 'white',},'& .MuiInputLabel-root.Mui-focused': { color: 'black',},
+                        '& .MuiOutlinedInput-root': {'&': { backgroundColor: 'white',},'& fieldset': {borderColor: 'white',},
+                        '&:hover fieldset': {borderColor: 'white',}, '&.Mui-focused fieldset': {borderColor: 'white',},
+                          '& .MuiOutlinedInput-input': {color: 'black', },
+                        },
+                      }}  
+                />
+                <Select 
                 sx={{color: 'white','& .MuiSelect-icon': {
                     color: 'white', },'& .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
                   '&:hover .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
                 }}  
-               name="discountType" size="small" value={currentInvoice.discountType || 'percentage'} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)}>
-                <MenuItem value="percentage">%</MenuItem>
-                <MenuItem value="fixed">{currentInvoice.currency}</MenuItem>
-              </Select>
+            name="taxType"  size="small" value={currentInvoice.taxType || 'percentage'} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)}>
+                  <MenuItem color='white' value="percentage">%</MenuItem>
+                  <MenuItem color='white' value="fixed">{currentInvoice.currency}</MenuItem>
+                </Select>
+              </Stack>
+              <Typography>({currentInvoice.currency}{taxAmount.toFixed(2)})</Typography>
+            </Stack>
+          </Stack>
+        )}
+        {currentInvoice.discountEnabled && (
+          <Stack direction='row' justifyContent="space-between" alignItems="center">
+            <Typography>Discount:</Typography>
+            <Stack direction={{xs:'column', sm:'column', md:'row'}} spacing={1} alignItems="center">
+              <Stack direction={{xs:'row', sm:'row'}}>
+                <TextField type="number" name="discountValue" size="small"  value={currentInvoice.discountValue || ''} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)} 
+                  sx={{width:{xs:'50px', sm:'100px'},
+                        '& .MuiInputLabel-root': { color: 'white',},'& .MuiInputLabel-root.Mui-focused': { color: 'black',},
+                        '& .MuiOutlinedInput-root': {'&': { backgroundColor: 'white',},'& fieldset': {borderColor: 'white',},
+                        '&:hover fieldset': {borderColor: 'white',}, '&.Mui-focused fieldset': {borderColor: 'white',},
+                          '& .MuiOutlinedInput-input': {color: 'black', },
+                        },
+                  }}  
+                />
+                <Select 
+                  sx={{color: 'white','& .MuiSelect-icon': {
+                      color: 'white', },'& .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
+                    '&:hover .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {borderColor: 'white',},
+                  }}  
+                name="discountType" size="small" value={currentInvoice.discountType || 'percentage'} onChange={(e) => updateCurrentInvoiceField(e.target.name, e.target.value)}>
+                  <MenuItem value="percentage">%</MenuItem>
+                  <MenuItem value="fixed">{currentInvoice.currency}</MenuItem>
+                </Select>
+              </Stack>
               <Typography color="error">(-{currentInvoice.currency}{discountAmount.toFixed(2)})</Typography>
             </Stack>
           </Stack>

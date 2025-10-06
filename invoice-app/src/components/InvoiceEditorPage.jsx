@@ -12,6 +12,9 @@ import InvoiceItems from './InvoiceItems';
 import Summary from './Summary';
 import InvoiceOptions from './InvoiceOptions';
 import { InvoicePreview }  from './InvoicePreview';
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
+import InvoicePdf from './InvoicePdf';
+import BarcodeGenerator from './BarcodeGenerator';
 function InvoiceEditorPage() {
   const { user } = useContext(AuthContext);
   const { invoiceData, updateField,
@@ -20,6 +23,7 @@ function InvoiceEditorPage() {
   } = useContext(InvoiceContext);
   const navigate=useNavigate()
    const { invoiceId } = useParams();
+   const [isPreviewing, setIsPreviewing] = useState(false);
   const [guestCompanyProfile, setGuestCompanyProfile] = useState({
     companyName: '', companyAddress: '',
         companyLogo:null,
@@ -413,18 +417,30 @@ function InvoiceEditorPage() {
         <Stack direction='row' spacing={2} my={2} justifyContent='center' alignItems='center'>
           <Button sx={{ borderRadius:'8px 8px', backgroundColor:'gold',color:'black'}} onClick={handleSave}>{currentInvoice._id ? 'Save Changes' : 'Create Invoice'}</Button>
         </Stack>
-        <Stack>
-            <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-              <Stack width='794px'>
-                <InvoicePreview ref={componentToPrintRef} data={previewData} />      
-              </Stack>
-            </div>
-        </Stack>
       </Stack>
-      <Stack width='80%' overflow='auto'><InvoicePreview data={previewData}  /></Stack>
-      <Stack pb={4}>
-        <Button sx={{ borderRadius:'8px 8px', backgroundColor:'gold', color:'black'}}  onClick={handleDownload}>Save as PDF</Button>
-      </Stack>
+      <div className="editor-panel">
+        <button onClick={() => setIsPreviewing(!isPreviewing)}>
+          {isPreviewing ? 'Close Preview' : 'Show PDF Preview'}
+        </button>
+        
+        <PDFDownloadLink
+          document={<InvoicePdf data={previewData} />}
+          fileName={`Invoice-${previewData.invoiceNumber}.pdf`}
+        >
+          {({ blob, url, loading, error }) => 
+            loading ? 'Preparing PDF...' : 'Download PDF'
+          }
+        </PDFDownloadLink>
+      </div>
+    
+    {/* The live preview panel */}
+      <div className="preview-panel">
+        {isPreviewing && (
+          <PDFViewer style={{ width: '100%', height: '100%' }}>
+            <InvoicePdf data={previewData} />
+          </PDFViewer>
+        )}
+      </div>
     </Stack>
   )
 }

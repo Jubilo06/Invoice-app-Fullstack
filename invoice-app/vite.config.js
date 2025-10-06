@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from "vite-plugin-pwa"; 
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 
 export default defineConfig({
@@ -50,5 +51,14 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
       },
     }),
+    nodePolyfills({
+      exclude: [],
+      globals: {
+        Buffer: true, 
+        global: true,
+        process: true,
+      },
+      protocolImports: true,
+    })
   ],
 });

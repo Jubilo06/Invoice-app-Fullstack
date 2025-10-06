@@ -1,6 +1,6 @@
 import React from 'react';
-import { Page, Document, StyleSheet, Text, View, Image, Font } from '@react-pdf/renderer';
 import Barcode from 'react-barcode';
+import { Page, Document, StyleSheet, Text, View, Image, Font } from '@react-pdf/renderer';
 // --- 1. Font Registration ---
 // The paths are relative to the `public` folder.
 Font.register({
