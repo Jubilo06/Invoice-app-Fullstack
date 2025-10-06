@@ -16,6 +16,9 @@ export default defineConfig({
         enabled: true, 
         type: "module", 
       },
+      injectManifest: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+      },
       manifest: {
         name: "Jubilo Invoice App",
         short_name: "InvoiceApp",
