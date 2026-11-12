@@ -16,6 +16,7 @@ import Profile from './components/Profile'
 import ProtectedRoute from './components/ProtectedRoute'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
+import ErrorPage from './components/ErrorPage'
 
 function App() {
    const { currentInvoice } = useContext(InvoiceContext);
@@ -60,7 +61,7 @@ function App() {
             } 
           />
           
-          <Route path="*" element={<div>404 - Page Not Found</div>} /> 
+          <Route path="*" element={<ErrorPage/>} /> 
         </Routes>
         <Footer />
       </Stack>

@@ -12,6 +12,7 @@ import path from "path";
 import { fileURLToPath } from "url"; 
 import router from '../routes/index.mjs';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -49,7 +50,7 @@ mongoose
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
-
 const PORT = process.env.PORT || 5014;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 export default app;
