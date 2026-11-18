@@ -50,6 +50,13 @@ mongoose
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
+
+// Lightweight health check route for keep-alive pings
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+
 const PORT = process.env.PORT || 5014;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
